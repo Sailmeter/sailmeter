@@ -3,6 +3,7 @@ var nmea = require('nmea-0183');
 var url = require('url');
 var fs = require('fs');
 var utils = require("./utils.js");
+var seriallistener = require('./seriallistener');
 
 var http = require('http');
 
@@ -54,25 +55,56 @@ function setupSocketIO(cb) {
 //    io.set('heartbeat timeout', 60*60); // 1h time out
 //  });
 
-  setupSerialPorts();
+  seriallistener.getSerialPorts(writeData);
   cb && cb();
 }
 
+function writeData(port, sentence) {
+  try {
+    var object = nmea.parse(sentence)
+    var timestamp = Date.now();
+    if ("angle" in object && "speed" in object) {
+      var obj1 = {};
+      var obj2 = {};
+      if (object.reference === "R") {
+        obj1 = {name: "AWA", value: object.angle, units: "deg", timestamp: Date.now()};
+        obj2 = {name: "AWS", value: object.speed, units: object.units, timestamp: Date.now()};
+      }
+      else if (object.reference === "R") {
+        obj1 = {name: "TWA", value: object.angle, units: "deg", timestamp: Date.now()};
+        obj2 = {name: "TWS", value: object.speed, units: object.units, timestamp: Date.now()};
+      }
 
-function setupSerialPorts(cb) {
-  serialPort.list(function (err, ports) {
-    if (err) {
-      throw err;
+      obj1.timestamp = timestamp;
+      obj2.timestamp = timestamp;
+      io.emit('nmea', JSON.stringify([obj1, obj2], null, 2));
+    } else if ("latitude" in object && "longitude" in object) {
+      // throw this away if no satellites were used.
+      if (object.satellites) {
+        var obj1 = {name: "LAT", value: object.latitude, timestamp: Date.now()};
+        var obj2 = {name: "LON", value: object.longitude, timestamp: Date.now()};
+
+        obj1.timestamp = timestamp;
+        obj2.timestamp = timestamp;
+        io.emit('nmea', JSON.stringify([obj1, obj2], null, 2));
+      }
+    } else if ("course" in object && "knots" in object) {
+        var obj1 = {name: "SPD", value: object.knots, timestamp: Date.now()};
+        var obj2 = {name: "CRS", value: object.course, timestamp: Date.now()};
+
+        obj1.timestamp = timestamp;
+        obj2.timestamp = timestamp;
+        io.emit('nmea', JSON.stringify([obj1, obj2], null, 2));
+    } else {
+      //console.log(object);
     }
-    ports.forEach(function(port) {
-      console.log("Port: " + port.comName);
-      console.log("Driver: " + port.pnpId);
-      console.log("Manufacturer: " + port.manufacturer);
-      portLogger(port.comName);
-    });
-
-  });
+  } catch (exception) {
+    console.log(sentence);
+    console.log(exception);
+  }
 }
+
+
 
 function portLogger(port) {
 
