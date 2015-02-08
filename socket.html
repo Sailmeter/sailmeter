@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/jquery.js"></script>  </head>
+  <body>
+    <script>
+      var socket = io.connect();
+
+      socket.on('nmea', function(data){
+        var dataEl = $('#nmea');
+        //dataEl.prepend("<li>" + data + "</li>");
+        var d = JSON.parse(data);
+        for (var i=0; i < d.length; i++) {
+          //console.log(JSON.stringify(d[i]));
+          dataEl.append(JSON.stringify(d[i]) + "<br>");
+        }
+        //if (dataEl.children().length > 20) {
+        //  dataEl.children()[20].remove();
+        //}
+      });
+    </script>
+    <div id="nmea"></div>
+  </body>
+</html>
