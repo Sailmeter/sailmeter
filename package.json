@@ -11,7 +11,7 @@
   "dependencies": {
     "serialport": "1.4.x",
     "config": "0.4.x",
-    "nmea-0183": "0.0.x",
+    "nmea-0183": "Sailmeter/node-nmea",
     "socket.io": "1.0.x"
   },
   "devDependencies": {},
