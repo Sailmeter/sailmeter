@@ -61,6 +61,7 @@ function setupSocketIO(cb) {
 
 function writeData(port, sentence) {
   try {
+    console.log(port + ": " + new Date().toString() + ": " + sentence);
     var object = nmea.parse(sentence)
     var timestamp = Date.now();
     if ("angle" in object && "speed" in object) {
@@ -70,7 +71,7 @@ function writeData(port, sentence) {
         obj1 = {name: "AWA", value: object.angle, units: "deg", timestamp: Date.now()};
         obj2 = {name: "AWS", value: object.speed, units: object.units, timestamp: Date.now()};
       }
-      else if (object.reference === "R") {
+      else if (object.reference === "T") {
         obj1 = {name: "TWA", value: object.angle, units: "deg", timestamp: Date.now()};
         obj2 = {name: "TWS", value: object.speed, units: object.units, timestamp: Date.now()};
       }
@@ -78,7 +79,46 @@ function writeData(port, sentence) {
       obj1.timestamp = timestamp;
       obj2.timestamp = timestamp;
       io.emit('nmea', JSON.stringify([obj1, obj2], null, 2));
-    } else if ("latitude" in object && "longitude" in object) {
+    } 
+    if ("heading1" in object && "reference1" in object) {
+      var obj1 = {};
+      if (object.reference1 === "magnetic") {
+        obj1 = {name: "MBH", value: object.heading1, units: "M", timestamp: Date.now()};
+      }
+      else if (object.reference === "true") {
+        obj1 = {name: "TBH", value: object.heading1, units: "T", timestamp: Date.now()};
+      }
+
+      obj1.timestamp = timestamp;
+      io.emit('nmea', JSON.stringify([obj1], null, 2));
+    }
+    if ("heading2" in object && "reference2" in object) {
+      var obj1 = {};
+      if (object.reference1 === "magnetic") {
+        obj1 = {name: "MBH", value: object.heading1, units: "M", timestamp: Date.now()};
+      }
+      else if (object.reference === "true") {
+        obj1 = {name: "TBH", value: object.heading1, units: "T", timestamp: Date.now()};
+      }
+
+      obj1.timestamp = timestamp;
+      io.emit('nmea', JSON.stringify([obj1], null, 2));
+    }
+    if ("sow_knots" in object) {
+      var obj1 = {};
+      obj1 = {name: "BSP", value: object.sow_knots, units: "K", timestamp: Date.now()};
+
+      obj1.timestamp = timestamp;
+      io.emit('nmea', JSON.stringify([obj1], null, 2));
+    }
+    if ("sow_kph" in object) {
+      var obj1 = {};
+      obj1 = {name: "BSP", value: object.sow_kph, units: "kph", timestamp: Date.now()};
+
+      obj1.timestamp = timestamp;
+      io.emit('nmea', JSON.stringify([obj1], null, 2));
+    }
+    if ("latitude" in object && "longitude" in object) {
       // throw this away if no satellites were used.
       if (object.satellites) {
         var obj1 = {name: "LAT", value: object.latitude, timestamp: Date.now()};
@@ -88,15 +128,14 @@ function writeData(port, sentence) {
         obj2.timestamp = timestamp;
         io.emit('nmea', JSON.stringify([obj1, obj2], null, 2));
       }
-    } else if ("course" in object && "knots" in object) {
+    } 
+    if ("course" in object && "knots" in object) {
         var obj1 = {name: "SPD", value: object.knots, timestamp: Date.now()};
         var obj2 = {name: "CRS", value: object.course, timestamp: Date.now()};
 
         obj1.timestamp = timestamp;
         obj2.timestamp = timestamp;
         io.emit('nmea', JSON.stringify([obj1, obj2], null, 2));
-    } else {
-      //console.log(object);
     }
   } catch (exception) {
     console.log(sentence);
