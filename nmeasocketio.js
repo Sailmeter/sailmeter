@@ -64,29 +64,31 @@ function writeData(port, sentence) {
     console.log(port + ": " + new Date().toString() + ": " + sentence);
     var object = nmea.parse(sentence)
     var timestamp = Date.now();
-    if ("angle" in object && "speed" in object) {
+    if ("apparent_wind_angle" in object && "reference" in object) {
       var obj1 = {};
-      var obj2 = {};
-      if (object.reference === "R") {
-        obj1 = {name: "AWA", value: object.angle, units: "deg", timestamp: Date.now()};
-        obj2 = {name: "AWS", value: object.speed, units: object.units, timestamp: Date.now()};
+      if (object.reference === "relative") {
+        obj1 = {name: "AWA", value: object.apparent_wind_angle, units: "deg", timestamp: Date.now()};
       }
-      else if (object.reference === "T") {
-        obj1 = {name: "TWA", value: object.angle, units: "deg", timestamp: Date.now()};
-        obj2 = {name: "TWS", value: object.speed, units: object.units, timestamp: Date.now()};
+      else if (object.reference === "true") {
+        obj1 = {name: "TWA", value: object.apparent_wind_angle, units: "deg", timestamp: Date.now()};
       }
 
       obj1.timestamp = timestamp;
-      obj2.timestamp = timestamp;
-      io.emit('nmea', JSON.stringify([obj1, obj2], null, 2));
+      io.emit('nmea', JSON.stringify([obj1], null, 2));
     } 
+    if ("apparent_wind_speed" in object && "units" in object) {
+      var obj1 = {name: "AWS", value: object.apparent_wind_speed, units: object.units, timestamp: Date.now()};
+
+      obj1.timestamp = timestamp;
+      io.emit('nmea', JSON.stringify([obj1], null, 2));
+    }
     if ("heading1" in object && "reference1" in object) {
       var obj1 = {};
       if (object.reference1 === "magnetic") {
-        obj1 = {name: "MBH", value: object.heading1, units: "M", timestamp: Date.now()};
+        obj1 = {name: "MBH", value: object.heading1, units: "deg", timestamp: Date.now()};
       }
       else if (object.reference === "true") {
-        obj1 = {name: "TBH", value: object.heading1, units: "T", timestamp: Date.now()};
+        obj1 = {name: "TBH", value: object.heading1, units: "deg", timestamp: Date.now()};
       }
 
       obj1.timestamp = timestamp;
@@ -95,10 +97,10 @@ function writeData(port, sentence) {
     if ("heading2" in object && "reference2" in object) {
       var obj1 = {};
       if (object.reference1 === "magnetic") {
-        obj1 = {name: "MBH", value: object.heading1, units: "M", timestamp: Date.now()};
+        obj1 = {name: "MBH", value: object.heading1, units: "deg", timestamp: Date.now()};
       }
       else if (object.reference === "true") {
-        obj1 = {name: "TBH", value: object.heading1, units: "T", timestamp: Date.now()};
+        obj1 = {name: "TBH", value: object.heading1, units: "deg", timestamp: Date.now()};
       }
 
       obj1.timestamp = timestamp;
