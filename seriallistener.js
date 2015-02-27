@@ -10,18 +10,18 @@ function getSerialPorts() {
   serialPort.list(function (err, ports) {
     if (err) {
       console.log("ERR: " + err);
-    } else {
-      ports.push({comName: '/dev/ttyO2'});
-      ports.push({comName: '/dev/ttyO4'});
-      ports.forEach(function(port) {
-        if (! runningPorts[port.comName] && runningPorts[port.comName] == null) {
-          //console.log("Port: " + port.comName);
-          //console.log("Driver: " + port.pnpId);
-          //console.log("Manufacturer: " + port.manufacturer);
-          portLogger(port.comName);
-        }
-      });
+      ports = [];
     }
+    ports.push({comName: '/dev/ttyO2'});
+    ports.push({comName: '/dev/ttyO4'});
+    ports.forEach(function(port) {
+      if (! runningPorts[port.comName] && runningPorts[port.comName] == null) {
+        //console.log("Port: " + port.comName);
+        //console.log("Driver: " + port.pnpId);
+        //console.log("Manufacturer: " + port.manufacturer);
+        portLogger(port.comName);
+      }
+    });
   });
 }
 
