@@ -1,24 +1,48 @@
 <html>
   <head>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/jquery.js"></script>  </head>
+    <script src="/jquery.js"></script>
+    <style>
+#nmea{
+float:left;
+width:75%;
+overflow:hidden;
+}
+#msg{
+float:left;
+width:25%;
+overflow:hidden;
+}
+ul
+{
+    list-style-type: none;
+}
+    </style>
+  </head>
   <body>
     <script>
       var socket = io.connect();
 
       socket.on('nmea', function(data){
         var dataEl = $('#nmea');
-        //dataEl.prepend("<li>" + data + "</li>");
         var d = JSON.parse(data);
         for (var i=0; i < d.length; i++) {
-          //console.log(JSON.stringify(d[i]));
-          dataEl.append(JSON.stringify(d[i]) + "<br>");
+          dataEl.prepend("<li>" + JSON.stringify(d[i]) + "</li>");
         }
-        //if (dataEl.children().length > 20) {
-        //  dataEl.children()[20].remove();
-        //}
+        if (dataEl.children().length > 50) {
+          dataEl.children()[50].remove();
+        }
+      });
+      socket.on('msg', function(data){
+        var dataEl = $('#msg');
+        var d = JSON.parse(data);
+        console.log(JSON.stringify(d));
+        dataEl.prepend("<li>" + JSON.stringify(d) + "</li>");
+        if (dataEl.children().length > 50) {
+          dataEl.children()[50].remove();
+        }
       });
     </script>
-    <div id="nmea"></div>
+    <ul><div id="nmea"></div></ul><ul><div id="msg"</div></ul>
   </body>
 </html>

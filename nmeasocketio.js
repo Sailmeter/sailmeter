@@ -8,13 +8,12 @@ var seriallistener = require('./seriallistener');
 var http = require('http');
 
 var server = http.createServer(function(request, response){
-        console.log('Connection');
         var path = url.parse(request.url).pathname;
 
         switch(path){
             case '/':
                 response.writeHead(200, {'Content-Type': 'text/html'});
-                response.write('hello world');
+                response.write('AfterGuard');
                 response.end();
                 break;
             case '/jquery.js':
@@ -30,6 +29,14 @@ var server = http.createServer(function(request, response){
                     }
                     response.end();
                 });
+                break;
+            case (path.match(/^\/countdown/) || {}).input:
+                var parts = path.split("/");
+                response.writeHead(200, {'Content-Type': 'text/html'});
+                response.write('countdown: ' + parts[2]);
+                response.end();
+                var countdown = {countdown: parts[2]};
+                writeMsg(countdown);
                 break;
             default:
                 response.writeHead(404);
@@ -210,4 +217,8 @@ function portLogger(port) {
     }
   });
 
+}
+
+function writeMsg(message) {
+  io.emit('msg', JSON.stringify(message, null, 2));
 }
