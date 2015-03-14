@@ -92,10 +92,10 @@ function writeData(port, sentence) {
     if ("heading1" in object && "reference1" in object) {
       var obj1 = {};
       if (object.reference1 === "magnetic") {
-        obj1 = {name: "MBH", value: object.heading1, units: "deg", timestamp: Date.now()};
+        obj1 = {name: "BHM", value: object.heading1, units: "deg", timestamp: Date.now()};
       }
       else if (object.reference === "true") {
-        obj1 = {name: "TBH", value: object.heading1, units: "deg", timestamp: Date.now()};
+        obj1 = {name: "BHT", value: object.heading1, units: "deg", timestamp: Date.now()};
       }
 
       obj1.timestamp = timestamp;
@@ -104,10 +104,10 @@ function writeData(port, sentence) {
     if ("heading2" in object && "reference2" in object) {
       var obj1 = {};
       if (object.reference1 === "magnetic") {
-        obj1 = {name: "MBH", value: object.heading1, units: "deg", timestamp: Date.now()};
+        obj1 = {name: "BHM", value: object.heading1, units: "deg", timestamp: Date.now()};
       }
       else if (object.reference === "true") {
-        obj1 = {name: "TBH", value: object.heading1, units: "deg", timestamp: Date.now()};
+        obj1 = {name: "BHT", value: object.heading1, units: "deg", timestamp: Date.now()};
       }
 
       obj1.timestamp = timestamp;
