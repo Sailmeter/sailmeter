@@ -33,10 +33,18 @@ var server = http.createServer(function(request, response){
             case (path.match(/^\/countdown/) || {}).input:
                 var parts = path.split("/");
                 response.writeHead(200, {'Content-Type': 'text/html'});
-                response.write('countdown: ' + parts[2]);
-                response.end();
                 var countdown = {countdown: parts[2]};
+                response.write(JSON.stringify(countdown));
+                response.end();
                 writeMsg(countdown);
+                break;
+            case (path.match(/^\/startlinefix/) || {}).input:
+                var parts = path.split("/");
+                response.writeHead(200, {'Content-Type': 'text/html'});
+                var startlinefix = {latitude: parts[2], hemi: parts[3], longitude: parts[4], easting: parts[5], bearing: parts[6] };
+                response.write(JSON.stringify(startlinefix));
+                response.end();
+                writeMsg(startlinefix);
                 break;
             default:
                 response.writeHead(404);
