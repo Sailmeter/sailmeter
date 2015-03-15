@@ -163,13 +163,13 @@ function writeData(port, sentence) {
     }
     if ("sow_knots" in object) {
       var obj1 = {};
-      obj1 = {name: "BSP", value: object.sow_knots, units: "K", timestamp: Date.now()};
+      obj1 = {name: "BST", value: object.sow_knots, units: "K", timestamp: Date.now()};
 
       io.emit('nmea', JSON.stringify([obj1], null, 2));
     }
     if ("sow_kph" in object) {
       var obj1 = {};
-      obj1 = {name: "BSP", value: object.sow_kph, units: "kph", timestamp: Date.now()};
+      obj1 = {name: "BST", value: object.sow_kph, units: "kph", timestamp: Date.now()};
 
       io.emit('nmea', JSON.stringify([obj1], null, 2));
     }
@@ -183,7 +183,7 @@ function writeData(port, sentence) {
       }
     } 
     if ("course" in object && "knots" in object) {
-        var obj1 = {name: "BSP", value: object.knots, timestamp: Date.now()};
+        var obj1 = {name: "BST", value: object.knots, timestamp: Date.now()};
         var obj2 = {name: "BHT", value: object.course, timestamp: Date.now()};
 
         io.emit('nmea', JSON.stringify([obj1, obj2], null, 2));
