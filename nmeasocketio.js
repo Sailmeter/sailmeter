@@ -110,16 +110,32 @@ function writeData(port, sentence) {
     if ("apparent_wind_angle" in object && "reference" in object) {
       var obj1 = {};
       if (object.reference === "relative") {
-        obj1 = {name: "AWA", value: object.apparent_wind_angle, units: "deg", timestamp: Date.now()};
+        obj1 = {name: "WAA", value: object.apparent_wind_angle, units: "deg", timestamp: Date.now()};
       }
       else if (object.reference === "true") {
-        obj1 = {name: "TWA", value: object.apparent_wind_angle, units: "deg", timestamp: Date.now()};
+        obj1 = {name: "WAT", value: object.apparent_wind_angle, units: "deg", timestamp: Date.now()};
       }
 
       io.emit('nmea', JSON.stringify([obj1], null, 2));
     } 
-    if ("apparent_wind_speed" in object && "units" in object) {
-      var obj1 = {name: "AWS", value: object.apparent_wind_speed, units: object.units, timestamp: Date.now()};
+    if ("apparent_wind_speed" in object && "reference" in object && "units" in object) {
+      var obj1 = {};
+      if (object.reference === "relative") {
+        obj1 = {name: "WSA", value: object.apparent_wind_speed, units: object.units, timestamp: Date.now()};
+      }
+      else if (object.reference === "true") {
+        obj1 = {name: "WST", value: object.apparent_wind_speed, units: object.units, timestamp: Date.now()};
+     }
+
+      io.emit('nmea', JSON.stringify([obj1], null, 2));
+    }
+    if ("apparent_wind_angle" in object && "apparent_wind_off_bow" in object) {
+      var obj1 = {name: "WAA", value: object.apparent_wind_angle, units: "deg", timestamp: Date.now()};
+
+      io.emit('nmea', JSON.stringify([obj1], null, 2));
+    }
+    if ("apparent_wind_speed_knots" in object) {
+      var obj1 = {name: "WSA", value: object.apparent_wind_angle, units: "K", timestamp: Date.now()};
 
       io.emit('nmea', JSON.stringify([obj1], null, 2));
     }
@@ -167,14 +183,14 @@ function writeData(port, sentence) {
       }
     } 
     if ("course" in object && "knots" in object) {
-        var obj1 = {name: "SPD", value: object.knots, timestamp: Date.now()};
-        var obj2 = {name: "CRS", value: object.course, timestamp: Date.now()};
+        var obj1 = {name: "BSP", value: object.knots, timestamp: Date.now()};
+        var obj2 = {name: "BHT", value: object.course, timestamp: Date.now()};
 
         io.emit('nmea', JSON.stringify([obj1, obj2], null, 2));
     }
   } catch (exception) {
-    console.log(sentence);
-    console.log(exception);
+    var error = {sentense: sentense, message: exception};
+    console.log(JSON.stringify(error));
   }
 }
 
