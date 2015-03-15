@@ -2,10 +2,13 @@ var webserver = require('config').Webserver;
 var nmea = require('nmea-0183');
 var url = require('url');
 var fs = require('fs');
+var LineByLineReader = require('line-by-line');
 var utils = require("./utils.js");
 var seriallistener = require('./seriallistener');
 
 var http = require('http');
+
+var runningDemoMode = false;
 
 var server = http.createServer(function(request, response){
         var path = url.parse(request.url).pathname;
@@ -30,6 +33,18 @@ var server = http.createServer(function(request, response){
                     response.end();
                 });
                 break;
+            case '/demomode/start': 
+              writeFileToSocketIO();
+              response.writeHead(200, {"Content-Type": "text/html"});
+              response.write("demomode started");
+              response.end();
+              break;
+            case '/demomode/stop': 
+              runningDemoMode = false;
+              response.writeHead(200, {"Content-Type": "text/html"});
+              response.write("demomode stopped");
+              response.end();
+              break;
             case (path.match(/^\/startcountdown/) || {}).input:
                 var parts = path.split("/");
                 var countdown = parts[2];
@@ -230,8 +245,8 @@ function portLogger(port) {
                 //console.log(object);
               }
             } catch (exception) {
-              console.log(sentence);
-              console.log(exception);
+              var error = {sentense: sentense, message: exception};
+              console.log(JSON.stringify(error));
             }
           }
       });
@@ -256,3 +271,31 @@ function runCountDown(countdown) {
     1000);
   }
 }
+
+var filename = 'nmeademo.txt';
+
+function writeFileToSocketIO() {
+  if (! runningDemoMode) {
+    runningDemoMode = true;
+    var stream = new LineByLineReader(filename);
+    stream.on('end', function() {
+      if (runningDemoMode) {
+        runningDemoMode = false;
+        writeFileToSocketIO();
+      }
+    });
+    stream.on('error', function(err) {
+      console.log(err);
+    });
+    stream.on('line', function(line) {
+      stream.pause();
+      if (runningDemoMode) {
+        writeData('demo', line);
+      }
+      var timer = setTimeout(function() {
+          stream.resume();
+      }, 1000);
+    });
+  }
+}
+

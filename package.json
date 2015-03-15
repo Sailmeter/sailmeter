@@ -9,9 +9,10 @@
     "node": "~0.6.11"
   },
   "dependencies": {
-    "serialport": "1.4.x",
     "config": "0.4.x",
+    "line-by-line": "^0.1.3",
     "nmea-0183": "Sailmeter/node-nmea",
+    "serialport": "1.4.x",
     "socket.io": "1.0.x"
   },
   "devDependencies": {},
