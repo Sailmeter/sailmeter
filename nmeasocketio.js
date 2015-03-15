@@ -30,13 +30,19 @@ var server = http.createServer(function(request, response){
                     response.end();
                 });
                 break;
-            case (path.match(/^\/countdown/) || {}).input:
+            case (path.match(/^\/startcountdown/) || {}).input:
                 var parts = path.split("/");
-                response.writeHead(200, {'Content-Type': 'text/html'});
-                var countdown = {countdown: parts[2]};
-                response.write(JSON.stringify(countdown));
+                var countdown = parts[2];
+                if (countdown == parseInt(countdown, 10)) {
+                  response.writeHead(200, {'Content-Type': 'text/html'});
+                  response.write(JSON.stringify(countdown));
+                  runCountDown(countdown);
+                } else {
+                  var error = {error: "Not an Integer: " + parts[2]};
+                  response.writeHead(500, {'Content-Type': 'text/html'});
+                  response.write(JSON.stringify(error));
+                }
                 response.end();
-                writeMsg(countdown);
                 break;
             case (path.match(/^\/startlinefix/) || {}).input:
                 var parts = path.split("/");
@@ -229,4 +235,15 @@ function portLogger(port) {
 
 function writeMsg(message) {
   io.emit('msg', JSON.stringify(message, null, 2));
+}
+
+function runCountDown(countdown) {
+  if (countdown >= 0) {
+    io.emit('countdown', countdown); 
+    setTimeout(
+      function() { 
+        runCountDown(--countdown);
+      }, 
+    1000);
+  }
 }
