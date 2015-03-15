@@ -8,9 +8,14 @@ float:left;
 width:50%;
 overflow:hidden;
 }
+#msg{
+float:left;
+width:40%;
+overflow:hidden;
+}
 #countdown{
 float:left;
-width:50%;
+width:10%;
 overflow:hidden;
 }
 ul
@@ -36,13 +41,20 @@ ul
       socket.on('countdown', function(data){
         var dataEl = $('#countdown');
         var d = JSON.parse(data);
-        console.log(JSON.stringify(d));
+        dataEl.prepend("<li>" + JSON.stringify(d) + "</li>");
+        if (dataEl.children().length > 50) {
+          dataEl.children()[50].remove();
+        }
+      });
+      socket.on('msg', function(data){
+        var dataEl = $('#msg');
+        var d = JSON.parse(data);
         dataEl.prepend("<li>" + JSON.stringify(d) + "</li>");
         if (dataEl.children().length > 50) {
           dataEl.children()[50].remove();
         }
       });
     </script>
-    <ul><div id="nmea"></div></ul><ul><div id="countdown"</div></ul>
+    <ul><div id="nmea"></div></ul><ul><div id="msg"></div></ul><ul><div id="countdown"></div></ul>
   </body>
 </html>
