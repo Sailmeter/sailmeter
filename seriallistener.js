@@ -28,14 +28,16 @@ function getSerialPorts() {
 function disconnectSerialPort(port) {
   if (runningPorts[port] != null) {
     //console.log("Disconnected: " + port);
-  }
-  runningPorts[port].close(function(err) {
-    if (err) {
-      console.log("ERR: " + err);
-    }
-    runningPorts[port] = null;
+    runningPorts[port].close(function(err) {
+      if (err) {
+        console.log("ERR: " + err);
+      }
+      runningPorts[port] = null;
+      getSerialPorts();
+    });
+  } else {
     getSerialPorts();
-  });
+  }
 }
 
 function portLogger(port) {
