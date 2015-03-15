@@ -116,13 +116,11 @@ function writeData(port, sentence) {
         obj1 = {name: "TWA", value: object.apparent_wind_angle, units: "deg", timestamp: Date.now()};
       }
 
-      obj1.timestamp = timestamp;
       io.emit('nmea', JSON.stringify([obj1], null, 2));
     } 
     if ("apparent_wind_speed" in object && "units" in object) {
       var obj1 = {name: "AWS", value: object.apparent_wind_speed, units: object.units, timestamp: Date.now()};
 
-      obj1.timestamp = timestamp;
       io.emit('nmea', JSON.stringify([obj1], null, 2));
     }
     if ("heading1" in object && "reference1" in object) {
@@ -130,37 +128,33 @@ function writeData(port, sentence) {
       if (object.reference1 === "magnetic") {
         obj1 = {name: "BHM", value: object.heading1, units: "deg", timestamp: Date.now()};
       }
-      else if (object.reference === "true") {
+      else if (object.reference1 === "true") {
         obj1 = {name: "BHT", value: object.heading1, units: "deg", timestamp: Date.now()};
       }
 
-      obj1.timestamp = timestamp;
       io.emit('nmea', JSON.stringify([obj1], null, 2));
     }
     if ("heading2" in object && "reference2" in object) {
       var obj1 = {};
-      if (object.reference1 === "magnetic") {
+      if (object.reference2 === "magnetic") {
         obj1 = {name: "BHM", value: object.heading1, units: "deg", timestamp: Date.now()};
       }
-      else if (object.reference === "true") {
+      else if (object.reference2 === "true") {
         obj1 = {name: "BHT", value: object.heading1, units: "deg", timestamp: Date.now()};
       }
 
-      obj1.timestamp = timestamp;
       io.emit('nmea', JSON.stringify([obj1], null, 2));
     }
     if ("sow_knots" in object) {
       var obj1 = {};
       obj1 = {name: "BSP", value: object.sow_knots, units: "K", timestamp: Date.now()};
 
-      obj1.timestamp = timestamp;
       io.emit('nmea', JSON.stringify([obj1], null, 2));
     }
     if ("sow_kph" in object) {
       var obj1 = {};
       obj1 = {name: "BSP", value: object.sow_kph, units: "kph", timestamp: Date.now()};
 
-      obj1.timestamp = timestamp;
       io.emit('nmea', JSON.stringify([obj1], null, 2));
     }
     if ("latitude" in object && "longitude" in object) {
@@ -169,8 +163,6 @@ function writeData(port, sentence) {
         var obj1 = {name: "LAT", value: object.latitude, timestamp: Date.now()};
         var obj2 = {name: "LON", value: object.longitude, timestamp: Date.now()};
 
-        obj1.timestamp = timestamp;
-        obj2.timestamp = timestamp;
         io.emit('nmea', JSON.stringify([obj1, obj2], null, 2));
       }
     } 
@@ -178,8 +170,6 @@ function writeData(port, sentence) {
         var obj1 = {name: "SPD", value: object.knots, timestamp: Date.now()};
         var obj2 = {name: "CRS", value: object.course, timestamp: Date.now()};
 
-        obj1.timestamp = timestamp;
-        obj2.timestamp = timestamp;
         io.emit('nmea', JSON.stringify([obj1, obj2], null, 2));
     }
   } catch (exception) {
