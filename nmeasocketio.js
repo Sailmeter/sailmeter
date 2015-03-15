@@ -36,6 +36,13 @@ var server = http.createServer(function(request, response){
                 if (countdown == parseInt(countdown, 10)) {
                   response.writeHead(200, {'Content-Type': 'text/html'});
                   response.write(JSON.stringify(countdown));
+                  if (currentTimeout != null) {
+                    try {
+                      clearTimeout(currentTimeout);
+                    }
+                    catch(err) {
+                    }
+                  }
                   runCountDown(countdown);
                 } else {
                   var error = {error: "Not an Integer: " + parts[2]};
@@ -237,10 +244,12 @@ function writeMsg(message) {
   io.emit('msg', JSON.stringify(message, null, 2));
 }
 
+var currentTimeout = null;
+
 function runCountDown(countdown) {
   if (countdown >= 0) {
     io.emit('countdown', countdown); 
-    setTimeout(
+    currentTimeout = setTimeout(
       function() { 
         runCountDown(--countdown);
       }, 
