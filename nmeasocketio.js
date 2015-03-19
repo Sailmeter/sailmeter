@@ -280,6 +280,9 @@ function runCountDown(countdown) {
 
 var filename = 'nmeademo.txt';
 
+
+writeFileToSocketIO();
+
 function writeFileToSocketIO() {
   if (! runningDemoMode) {
     runningDemoMode = true;
@@ -287,7 +290,9 @@ function writeFileToSocketIO() {
     stream.on('end', function() {
       if (runningDemoMode) {
         runningDemoMode = false;
+        setTimeout(function() {
         writeFileToSocketIO();
+        },1000);			
       }
     });
     stream.on('error', function(err) {
