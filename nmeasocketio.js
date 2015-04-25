@@ -280,9 +280,6 @@ function runCountDown(countdown) {
 
 var filename = 'nmeademo.txt';
 
-
-writeFileToSocketIO();
-
 function writeFileToSocketIO() {
   if (! runningDemoMode) {
     runningDemoMode = true;
