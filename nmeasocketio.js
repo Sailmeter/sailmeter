@@ -189,7 +189,7 @@ function writeData(port, sentence) {
         io.emit('nmea', JSON.stringify([obj1, obj2], null, 2));
     }
   } catch (exception) {
-    var error = {sentense: sentense, message: exception};
+    var error = {sentence: sentence, message: exception};
     console.log(JSON.stringify(error));
   }
 }
