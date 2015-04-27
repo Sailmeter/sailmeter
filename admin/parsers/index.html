@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <script src="/jquery.js"></script>
+    <style>
+textarea
+{
+    width:100%;
+}
+.textwrapper
+{
+    border:1px solid #999999;
+    margin:5px 0;
+    padding:3px;
+}
+    </style>
+  </head>
+  <body>
+    <h3>Edit parsers file</h3>
+    <script>
+      $.get( "show", function( data ) {
+        var json = JSON.parse(data)
+        $( "#parserstextarea" ).val( JSON.stringify(json, null, 4) );
+      });
+    </script>
+
+<form action="edit" id="parsersform" method=post>
+<div style="display: block;" id="rulesformitem" class="formitem">
+    <label for="rules" id="ruleslabel">Parsers</label>
+    <div class="textwrapper"><textarea cols="2" rows="30" id="parserstextarea" name="parsers" form="parsersform">Enter text here...</textarea></div>
+    <input type="submit">
+</div>
+
+</form>
+
+  </body>
+</html>

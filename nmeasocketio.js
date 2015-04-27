@@ -2,6 +2,7 @@ var webserver = require('config').Webserver;
 var nmea = require('./NMEA.js');
 var url = require('url');
 var fs = require('fs');
+var querystring = require('querystring');
 var LineByLineReader = require('line-by-line');
 var utils = require("./utils.js");
 var seriallistener = require('./seriallistener');
@@ -11,6 +12,16 @@ var http = require('http');
 var runningDemoMode = false;
 
 nmea.loadParsers();
+
+function parsePost(req, callback) {
+  var data = '';
+  req.on('data', function(chunk) {
+    data += chunk;
+  });
+  req.on('end', function() {
+    callback(data);
+  });
+}
 
 var server = http.createServer(function(request, response){
         var path = url.parse(request.url).pathname;
@@ -23,6 +34,8 @@ var server = http.createServer(function(request, response){
                 break;
             case '/jquery.js':
             case '/socket.html':
+            case '/admin.html':
+            case '/admin/parsers/index.html':
                 fs.readFile(__dirname + path, function(error, data){
                     if (error){
                         response.writeHead(404);
@@ -76,6 +89,36 @@ var server = http.createServer(function(request, response){
                 response.end();
                 writeMsg(startlinefix);
                 break;
+            case '/admin/parsers/show': 
+		try {
+		  var parsers = JSON.parse(fs.readFileSync(__dirname + '/parsers.json', 'utf8'));
+                  response.writeHead(200, {"Content-Type": "text/html"});
+                  response.write(JSON.stringify(parsers));
+		} catch (exception) {
+                  response.writeHead(500, {'Content-Type': 'text/html'});
+		  var error = {exception: exception.message};
+                  response.write(JSON.stringify(error));
+		} finally {
+                  response.end();
+		}
+		break;
+            case '/admin/parsers/edit': 
+                parsePost(request, function(data) {
+		  var obj = querystring.parse(data);
+		  try {
+		     var json = JSON.parse(obj.parsers);
+                     response.writeHead(200, {"Content-Type": "text/html"});
+		     fs.writeFileSync(__dirname + '/parsers.json', JSON.stringify(json, null, 4), 'utf8');
+                     response.write("file received");
+		  } catch (exception) {
+                    response.writeHead(500, {'Content-Type': 'text/html'});
+		    var error = {exception: exception.message};
+                    response.write(JSON.stringify(error));
+		  } finally {
+                    response.end();
+		  }
+                });
+		break;
             default:
                 response.writeHead(404);
                 response.write("opps this doesn't exist - 404");
@@ -100,7 +143,7 @@ function setupSocketIO(cb) {
 //    io.set('heartbeat timeout', 60*60); // 1h time out
 //  });
 
-  seriallistener.getSerialPorts(writeData);
+//  seriallistener.getSerialPorts(writeData);
   cb && cb();
 }
 
