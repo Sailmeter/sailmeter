@@ -107,8 +107,9 @@ var server = http.createServer(function(request, response){
 		  var obj = querystring.parse(data);
 		  try {
 		     var json = JSON.parse(obj.parsers);
-                     response.writeHead(200, {"Content-Type": "text/html"});
 		     fs.writeFileSync(__dirname + '/parsers.json', JSON.stringify(json, null, 4), 'utf8');
+                     nmea.loadParsers();
+                     response.writeHead(200, {"Content-Type": "text/html"});
                      response.write("file received");
 		  } catch (exception) {
                     response.writeHead(500, {'Content-Type': 'text/html'});
