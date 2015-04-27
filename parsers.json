@@ -80,5 +80,11 @@
             "value": "5",
             "units": "6"
         }
+    },
+    "GPGSA": {
+    },
+    "GPRMC": {
+    },
+    "GPGGA": {
     }
 }
