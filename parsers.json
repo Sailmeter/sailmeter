@@ -1,0 +1,70 @@
+{
+  "IIVWR": {
+    "WAA": {
+      "value": "1",
+      "units": "2"
+    },
+    "WSA": {
+      "value": "3",
+      "units": "4"
+    }
+  },
+  "IIMWV": {
+    "WAA": {
+      "value": "1",
+      "units": "2",
+      "conditional": {
+        "value": "2",
+        "equals": "R"
+      }
+    },
+    "WSA": {
+      "value": "3",
+      "units": "4",
+      "conditional": {
+        "value": "2",
+        "equals": "R"
+      }
+    },
+    "WAT": {
+      "value": "1",
+      "units": "2",
+      "conditional": {
+        "value": "2",
+        "equals": "T"
+      }
+    },
+    "WST": {
+      "value": "3",
+      "units": "4",
+      "conditional": {
+        "value": "2",
+        "equals": "T"
+      }
+    }
+  },
+  "IIVHW": {
+    "BHT": {
+      "value": "1",
+      "units": "2"
+    },
+    "BST": {
+      "value": "5",
+      "units": "6"
+    }
+  },
+  "GPVTG": {
+    "BHT": {
+      "value": "1",
+      "units": "2"
+    },
+    "BHM": {
+      "value": "3",
+      "units": "4"
+    },
+    "BST": {
+      "value": "5",
+      "units": "6"
+    }
+  }
+}

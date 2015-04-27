@@ -1,5 +1,5 @@
 var webserver = require('config').Webserver;
-var nmea = require('nmea-0183');
+var nmea = require('./NMEA.js');
 var url = require('url');
 var fs = require('fs');
 var LineByLineReader = require('line-by-line');
@@ -9,6 +9,8 @@ var seriallistener = require('./seriallistener');
 var http = require('http');
 
 var runningDemoMode = false;
+
+nmea.loadParsers();
 
 var server = http.createServer(function(request, response){
         var path = url.parse(request.url).pathname;
@@ -106,91 +108,10 @@ function writeData(port, sentence) {
   try {
     console.log(port + ": " + new Date().toString() + ": " + sentence);
     var object = nmea.parse(sentence)
-    var timestamp = Date.now();
-    if ("apparent_wind_angle" in object && "reference" in object) {
-      var obj1 = {};
-      if (object.reference === "relative") {
-        obj1 = {name: "WAA", value: object.apparent_wind_angle, units: "deg", timestamp: Date.now()};
-      }
-      else if (object.reference === "true") {
-        obj1 = {name: "WAT", value: object.apparent_wind_angle, units: "deg", timestamp: Date.now()};
-      }
-
-      io.emit('nmea', JSON.stringify([obj1], null, 2));
-    } 
-    if ("apparent_wind_speed" in object && "reference" in object && "units" in object) {
-      var obj1 = {};
-      if (object.reference === "relative") {
-        obj1 = {name: "WSA", value: object.apparent_wind_speed, units: object.units, timestamp: Date.now()};
-      }
-      else if (object.reference === "true") {
-        obj1 = {name: "WST", value: object.apparent_wind_speed, units: object.units, timestamp: Date.now()};
-     }
-
-      io.emit('nmea', JSON.stringify([obj1], null, 2));
-    }
-    if ("apparent_wind_angle" in object && "apparent_wind_off_bow" in object) {
-      var obj1 = {name: "WAA", value: object.apparent_wind_angle, units: "deg", timestamp: Date.now()};
-
-      io.emit('nmea', JSON.stringify([obj1], null, 2));
-    }
-    if ("apparent_wind_speed_knots" in object) {
-      var obj1 = {name: "WSA", value: object.apparent_wind_angle, units: "K", timestamp: Date.now()};
-
-      io.emit('nmea', JSON.stringify([obj1], null, 2));
-    }
-    if ("heading1" in object && "reference1" in object) {
-      var obj1 = {};
-      if (object.reference1 === "magnetic") {
-        obj1 = {name: "BHM", value: object.heading1, units: "deg", timestamp: Date.now()};
-      }
-      else if (object.reference1 === "true") {
-        obj1 = {name: "BHT", value: object.heading1, units: "deg", timestamp: Date.now()};
-      }
-
-      io.emit('nmea', JSON.stringify([obj1], null, 2));
-    }
-    if ("heading2" in object && "reference2" in object) {
-      var obj1 = {};
-      if (object.reference2 === "magnetic") {
-        obj1 = {name: "BHM", value: object.heading1, units: "deg", timestamp: Date.now()};
-      }
-      else if (object.reference2 === "true") {
-        obj1 = {name: "BHT", value: object.heading1, units: "deg", timestamp: Date.now()};
-      }
-
-      io.emit('nmea', JSON.stringify([obj1], null, 2));
-    }
-    if ("sow_knots" in object) {
-      var obj1 = {};
-      obj1 = {name: "BST", value: object.sow_knots, units: "K", timestamp: Date.now()};
-
-      io.emit('nmea', JSON.stringify([obj1], null, 2));
-    }
-    if ("sow_kph" in object) {
-      var obj1 = {};
-      obj1 = {name: "BST", value: object.sow_kph, units: "kph", timestamp: Date.now()};
-
-      io.emit('nmea', JSON.stringify([obj1], null, 2));
-    }
-    if ("latitude" in object && "longitude" in object) {
-      // throw this away if no satellites were used.
-      if (object.satellites) {
-        var obj1 = {name: "LAT", value: object.latitude, timestamp: Date.now()};
-        var obj2 = {name: "LON", value: object.longitude, timestamp: Date.now()};
-
-        io.emit('nmea', JSON.stringify([obj1, obj2], null, 2));
-      }
-    } 
-    if ("course" in object && "knots" in object) {
-        var obj1 = {name: "BST", value: object.knots, timestamp: Date.now()};
-        var obj2 = {name: "BHT", value: object.course, timestamp: Date.now()};
-
-        io.emit('nmea', JSON.stringify([obj1, obj2], null, 2));
-    }
+    object.timestamp = Date.now();
+    io.emit('nmea', JSON.stringify(object, null, 2));
   } catch (exception) {
-    var error = {sentence: sentence, message: exception};
-    console.log(JSON.stringify(error));
+    console.log("Error: " + port + ": " + new Date().toString() + ": " + sentence + " - " + exception);
   }
 }
 
