@@ -82,8 +82,34 @@
         }
     },
     "GPGSA": {},
-    "GPRMC": {},
-    "GPGGA": {},
+    "GPRMC": {
+      "BLA": {
+        "value": "3",
+        "units": "4"
+      },
+      "BLO": {
+        "value": "5",
+        "units": "6"
+      },
+        "BSP": {
+            "value": "7",
+            "code": "K"
+        },
+        "BHT": {
+            "value": "8",
+            "code": "T"
+        }
+    },
+    "GPGGA": {
+      "BLA": {
+        "value": "2",
+        "units": "3"
+      },
+      "BLO": {
+        "value": "3",
+        "units": "4"
+      }
+    },
     "GPGSV": {
     }
 }
