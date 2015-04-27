@@ -109,7 +109,6 @@ var NMEA = ( function() {
         }*/
 	
 	if (parsers[id]) {
-	  console.log(parsers[id]);
 	  var obj = parsers[id];
 	  result = {};
           for (var prop in obj) {
@@ -133,7 +132,6 @@ var NMEA = ( function() {
 	      }
 	    }
           }
-	  console.log(result);
 	}
 
         if(result === null) {
