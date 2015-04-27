@@ -109,7 +109,7 @@ function writeData(port, sentence) {
     console.log(port + ": " + new Date().toString() + ": " + sentence);
     var object = nmea.parse(sentence)
     object.timestamp = Date.now();
-    io.emit('nmea', JSON.stringify(object, null, 2));
+    io.emit('nmea', JSON.stringify([object], null, 2));
   } catch (exception) {
     console.log("Error: " + port + ": " + new Date().toString() + ": " + sentence + " - " + exception);
   }
