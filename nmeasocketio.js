@@ -144,7 +144,7 @@ function setupSocketIO(cb) {
 //    io.set('heartbeat timeout', 60*60); // 1h time out
 //  });
 
-//  seriallistener.getSerialPorts(writeData);
+  seriallistener.getSerialPorts(writeData);
   cb && cb();
 }
 
