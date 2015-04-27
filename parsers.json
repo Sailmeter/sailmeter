@@ -53,6 +53,20 @@
       "units": "6"
     }
   },
+  "VWVHW": {
+    "BHM": {
+      "value": "1",
+      "units": "2"
+    },
+    "BHT": {
+      "value": "3",
+      "units": "4"
+    },
+    "BSP": {
+      "value": "5",
+      "code": "K"
+    }
+  },
   "GPVTG": {
     "BHT": {
       "value": "1",

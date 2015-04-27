@@ -117,12 +117,20 @@ var NMEA = ( function() {
               if ( tokens[obj[prop].conditional.value] == obj[prop].conditional.equals) {
 	        result[prop] = {};
 	        result[prop].value = tokens[obj[prop].value];
-	        result[prop].units = tokens[obj[prop].units];
+		if (obj[prop].units) {
+	          result[prop].units = tokens[obj[prop].units];
+		} else if (obj[prop].code) {
+	          result[prop].units = obj[prop].code;
+		}
 	      }
 	    } else {
 	      result[prop] = {};
 	      result[prop].value = tokens[obj[prop].value];
-	      result[prop].units = tokens[obj[prop].units];
+	      if (obj[prop].units) {
+	        result[prop].units = tokens[obj[prop].units];
+              } else if (obj[prop].code) {
+	        result[prop].units = obj[prop].code;
+	      }
 	    }
           }
 	  console.log(result);
