@@ -81,10 +81,9 @@
             "units": "6"
         }
     },
-    "GPGSA": {
-    },
-    "GPRMC": {
-    },
-    "GPGGA": {
+    "GPGSA": {},
+    "GPRMC": {},
+    "GPGGA": {},
+    "GPGSV": {
     }
 }
