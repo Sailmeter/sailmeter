@@ -150,11 +150,15 @@ function setupSocketIO(cb) {
 function writeData(port, sentence) {
   try {
     console.log(port + ": " + new Date().toString() + ": " + sentence);
+    var raw = {port: port, timestamp: Date.now(), sentence: sentence};
+    io.emit('raw', JSON.stringify([raw], null, 2));
     var object = nmea.parse(sentence)
     object.timestamp = Date.now();
     io.emit('nmea', JSON.stringify([object], null, 2));
   } catch (exception) {
-    console.log("Error: " + port + ": " + new Date().toString() + ": " + sentence + " - " + exception);
+    var err = {port: port, timestamp: Date.now(), sentence: sentence, exception: exception.message};
+    io.emit('err', JSON.stringify([err], null, 2));
+    console.log("Error: " + port + ": " + new Date().toString() + ": " + sentence + " - " + exception.message);
   }
 }
 

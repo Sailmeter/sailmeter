@@ -1,13 +1,57 @@
 <html>
   <head>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="/jquery.js"></script>
     <style>
+#raw{
+float:left;
+width:50%;
+overflow:hidden;
+}
+#err{
+float:left;
+width:50%;
+overflow:hidden;
+}
+ul
+{
+    list-style-type: none;
+}
     </style>
   </head>
   <body>
     <script>
+      var socket = io.connect();
+
+      socket.on('raw', function(data){
+        var dataEl = $('#raw');
+        var d = JSON.parse(data);
+        for (var i=0; i < d.length; i++) {
+          dataEl.prepend("<li>" + JSON.stringify(d[i]) + "</li>");
+        }
+        if (dataEl.children().length > 20) {
+          dataEl.children()[20].remove();
+        }
+      });
+
+      socket.on('err', function(data){
+        var dataEl = $('#err');
+        var d = JSON.parse(data);
+        for (var i=0; i < d.length; i++) {
+          dataEl.prepend("<li>" + JSON.stringify(d[i]) + "</li>");
+        }
+        if (dataEl.children().length > 20) {
+          dataEl.children()[20].remove();
+        }
+      });
     </script>
     <H3>Afterguard Admin</H3>
     <a href="/admin/parsers/index.html">Edit Parsers File</a>
+    <p>
+    <a href="/demomode/start">Start Demo</a>
+    <br>
+    <a href="/demomode/stop">Stop Demo</a>
+    <p>
+    <ul><div id="raw"></div></ul><ul><div id="err"></div></ul>
   </body>
 </html>
