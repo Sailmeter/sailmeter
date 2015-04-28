@@ -191,7 +191,7 @@ setupSocketIO(function() {
 });
 
 function setupSocketIO(cb) {
-//  seriallistener.getSerialPorts(writeData);
+  seriallistener.getSerialPorts(writeData);
   cb && cb();
 }
 
