@@ -8,7 +8,7 @@ float:left;
 width:50%;
 overflow:hidden;
 }
-#msg{
+#ttk{
 float:left;
 width:40%;
 overflow:hidden;
@@ -46,8 +46,8 @@ ul
           dataEl.children()[50].remove();
         }
       });
-      socket.on('msg', function(data){
-        var dataEl = $('#msg');
+      socket.on('ttk', function(data){
+        var dataEl = $('#ttk');
         var d = JSON.parse(data);
         dataEl.prepend("<li>" + JSON.stringify(d) + "</li>");
         if (dataEl.children().length > 50) {
@@ -55,6 +55,6 @@ ul
         }
       });
     </script>
-    <ul><div id="nmea"></div></ul><ul><div id="msg"></div></ul><ul><div id="countdown"></div></ul>
+    <ul><div id="nmea"></div></ul><ul><div id="ttk"></div></ul><ul><div id="countdown"></div></ul>
   </body>
 </html>
