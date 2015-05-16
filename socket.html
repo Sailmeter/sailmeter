@@ -4,57 +4,59 @@
     <script src="/jquery.js"></script>
     <style>
 #nmea{
-float:left;
-width:50%;
+height: 110px;
+width:100%;
 overflow:hidden;
 }
 #ttk{
-float:left;
-width:40%;
+height: 110px;
+width:100%;
+overflow:hidden;
+}
+#dtl{
+height: 110px;
+width:100%;
 overflow:hidden;
 }
 #countdown{
-float:left;
-width:10%;
+height: 110px;
+width:100%;
 overflow:hidden;
-}
-ul
-{
-    list-style-type: none;
-}
     </style>
   </head>
   <body>
     <script>
       var socket = io.connect();
 
-      socket.on('nmea', function(data){
-        var dataEl = $('#nmea');
-        var d = JSON.parse(data);
-        for (var i=0; i < d.length; i++) {
-          dataEl.prepend("<li>" + JSON.stringify(d[i]) + "</li>");
-        }
-        if (dataEl.children().length > 50) {
-          dataEl.children()[50].remove();
-        }
-      });
-      socket.on('countdown', function(data){
-        var dataEl = $('#countdown');
-        var d = JSON.parse(data);
-        dataEl.prepend("<li>" + JSON.stringify(d) + "</li>");
-        if (dataEl.children().length > 50) {
-          dataEl.children()[50].remove();
-        }
-      });
-      socket.on('ttk', function(data){
-        var dataEl = $('#ttk');
-        var d = JSON.parse(data);
-        dataEl.prepend("<li>" + JSON.stringify(d) + "</li>");
-        if (dataEl.children().length > 50) {
-          dataEl.children()[50].remove();
-        }
-      });
+      function writeChannel(channel) {
+        console.log("Setting up Channel: " + channel);
+        socket.on(channel, function(data){
+          var dataEl = $('#' + channel);
+          var d = JSON.parse(data);
+	  if (d.length) {
+            for (var i=0; i < d.length; i++) {
+              dataEl.prepend(JSON.stringify(d[i]) + "<br>");
+            }
+	  } else {
+            dataEl.prepend(JSON.stringify(d) + "<br>");
+	  }
+          if (dataEl.children().length > 20) {
+            dataEl.children()[20].remove();
+          }
+        });
+      }
+      writeChannel('nmea');
+      writeChannel('ttk');
+      writeChannel('countdown');
+      writeChannel('dtl');
     </script>
-    <ul><div id="nmea"></div></ul><ul><div id="ttk"></div></ul><ul><div id="countdown"></div></ul>
+    <b>nmea</b><br>
+    <div id="nmea"></div>
+    <b>countdown</b>
+    <div id="countdown"></div>
+    <b>ttk</b>
+    <div id="ttk"></div>
+    <b>dtl</b>
+    <div id="dtl"></div>
   </body>
 </html>
