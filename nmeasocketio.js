@@ -7,6 +7,7 @@ var LineByLineReader = require('line-by-line');
 var utils = require("./utils.js");
 var seriallistener = require('./seriallistener');
 var ivector = require('./intersect');
+var mime = require('mime');
 
 var http = require('http');
 
@@ -42,17 +43,16 @@ var server = http.createServer(function(request, response){
                 response.write('AfterGuard');
                 response.end();
                 break;
-            case '/jquery.js':
-            case '/socket.html':
-            case '/admin.html':
-            case '/admin/parsers/index.html':
+            case (path.match(/\.js$/) || {}).input:
+            case (path.match(/\.html$/) || {}).input:
                 fs.readFile(__dirname + path, function(error, data){
                     if (error){
                         response.writeHead(404);
                         response.write("opps this doesn't exist - 404");
                     }
                     else{
-                        response.writeHead(200, {"Content-Type": "text/html"});
+			var mimetype = mime.lookup(__dirname + path);
+                        response.writeHead(200, {"Content-Type": mimetype});
                         response.write(data, "utf8");
                     }
                     response.end();
