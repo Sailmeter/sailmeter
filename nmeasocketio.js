@@ -11,6 +11,14 @@ var ivector = require('./intersect');
 var http = require('http');
 
 var runningDemoMode = false;
+var startDemoMode = false;
+var filename = null;
+var countdown = 0;
+
+if (process.argv[2] == "-demo") {
+  startDemoMode = true;
+  filename = "nmeademo.txt";
+}
 
 nmea.loadParsers();
 
@@ -24,7 +32,6 @@ function parsePost(req, callback) {
   });
 }
 
-var filename = null;
 
 var server = http.createServer(function(request, response){
         var path = url.parse(request.url).pathname;
@@ -52,7 +59,6 @@ var server = http.createServer(function(request, response){
                 });
                 break;
             case '/demomode/start': 
-	      filename = "nmeademo.txt";
               writeFileToSocketIO();
               response.writeHead(200, {"Content-Type": "text/html"});
               response.write("demomode started");
@@ -89,7 +95,7 @@ var server = http.createServer(function(request, response){
               break;
             case (path.match(/^\/startcountdown/) || {}).input:
                 var parts = path.split("/");
-                var countdown = parts[2];
+                countdown = parts[2];
                 if (countdown == parseInt(countdown, 10)) {
                   response.writeHead(200, {'Content-Type': 'text/html'});
                   response.write(JSON.stringify(countdown));
@@ -187,11 +193,16 @@ var serialPort = require("serialport");
 var io = require('socket.io')(server);
 
 setupSocketIO(function() {
-    console.log("Ready");
+  console.log("SocketIO Ready");
 });
 
 function setupSocketIO(cb) {
-  seriallistener.getSerialPorts(writeData);
+  if (! startDemoMode) {
+     seriallistener.getSerialPorts(writeData);
+  } else {
+     writeFileToSocketIO();
+     console.log("Starting in demo mode");
+  }
   cb && cb();
 }
 
@@ -255,8 +266,11 @@ function runStartLineFix(startlinefix) {
     }
     var startline = ivector.getLine(startpoint, startlinefix.bearing, 1/3600);
     var distance = ivector.getDistance({x: currentlat, y: currentlon}, startline);
-    var timetokill = currentspeed / distance;
-    io.emit('ttk', [timetokill]); 
+    io.emit('dtl', [distance]);
+    if (countdown) {
+      var timetokill = countdown - (distance / currentspeed)*3600;
+      io.emit('ttk', [timetokill]); 
+    }
     startlinefixTimeout = setTimeout(
       function() { 
         runStartLineFix(startlinefix);
