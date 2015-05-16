@@ -33,30 +33,32 @@ function parsePost(req, callback) {
   });
 }
 
+function readFile(path, response) {
+  fs.readFile(__dirname + path, function(error, data){
+    if (error){
+      response.writeHead(404);
+      response.write("opps this doesn't exist - 404");
+    }
+    else {
+      var mimetype = mime.lookup(__dirname + path);
+      response.writeHead(200, {"Content-Type": mimetype});
+      response.write(data, "utf8");
+    }
+    response.end();
+  });
+}
 
 var server = http.createServer(function(request, response){
         var path = url.parse(request.url).pathname;
 
         switch(path){
             case '/':
-                response.writeHead(200, {'Content-Type': 'text/html'});
-                response.write('AfterGuard');
-                response.end();
+	        readFile("/index.html", response);
                 break;
+            case (path.match(/\.css$/) || {}).input:
             case (path.match(/\.js$/) || {}).input:
             case (path.match(/\.html$/) || {}).input:
-                fs.readFile(__dirname + path, function(error, data){
-                    if (error){
-                        response.writeHead(404);
-                        response.write("opps this doesn't exist - 404");
-                    }
-                    else{
-			var mimetype = mime.lookup(__dirname + path);
-                        response.writeHead(200, {"Content-Type": mimetype});
-                        response.write(data, "utf8");
-                    }
-                    response.end();
-                });
+	        readFile(path, response);
                 break;
             case '/demomode/start': 
               writeFileToSocketIO();

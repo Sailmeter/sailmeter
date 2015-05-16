@@ -1,25 +1,44 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
+    <title>Afterguard</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Afterguard">
+    <link href="/bootstrap.min.css" rel="stylesheet">
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/jquery.js"></script>
     <style>
 #raw{
-float:left;
-width:50%;
+height: 260px;
+width:100%;
 overflow:hidden;
 }
 #err{
-float:left;
-width:50%;
+height: 110px;
+width:100%;
 overflow:hidden;
-}
-ul
-{
-    list-style-type: none;
 }
     </style>
   </head>
-  <body>
+ <body style="padding-bottom:10rem;">
+    <nav role="navigation" class="navbar navbar-default">
+      <div class="navbar-header">
+      <button type="button" data-toggle="collapse" data-target="#navbar-inverse" aria-expanded="false" aria-controls="navbar" class="navbar-toggle collapsed">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        </button>
+        <a href="/" class="navbar-brand">Afterguard</a>
+      </div>
+      <div id="navbar-inverse" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="/">Home</a></li>
+          <li class="active"><a href="/admin.html">Admin</a></li>
+        </ul>
+      </div>
+    </nav>
     <script>
       var socket = io.connect();
 
@@ -27,7 +46,7 @@ ul
         var dataEl = $('#raw');
         var d = JSON.parse(data);
         for (var i=0; i < d.length; i++) {
-          dataEl.prepend("<li>" + JSON.stringify(d[i]) + "</li>");
+          dataEl.prepend(JSON.stringify(d[i]) + "<br>");
         }
         if (dataEl.children().length > 20) {
           dataEl.children()[20].remove();
@@ -45,7 +64,10 @@ ul
         }
       });
     </script>
-    <H3>Afterguard Admin</H3>
+<div class="container">
+  <H3>Afterguard Admin</H3>
+  <div class="row">
+  <div class="col-md-4">
     <a href="socket.html">Socket Output</a>
     <p>
     <a href="/admin/parsers/index.html">Edit Parsers File</a>
@@ -63,7 +85,22 @@ ul
     <a href="/demostartmode/stop">Stop</a>
     <br>
     <a href="/startlinefix/49.260506746458255/N/123.18586086244291/W/290">Take Fix</a>
-    <p>
-    <ul><div id="raw"></div></ul><ul><div id="err"></div></ul>
+  </div>
+  <div class="col-md-8">
+    <div class="row">
+      <b>raw</b>
+      <div id="raw"></div>
+    </div>
+    <div class="row">
+      <b>err</b>
+      <div id="err"></div>
+    </div>
+  </div>
+  <div class="col-md-4">
+  </div>
+  </div>
+</div>
+    <script src="/jquery.min.js"></script>
+    <script src="/bootstrap.min.js"></script>
   </body>
 </html>
