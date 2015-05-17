@@ -58,6 +58,7 @@ var server = http.createServer(function(request, response){
             case (path.match(/\.css$/) || {}).input:
             case (path.match(/\.js$/) || {}).input:
             case (path.match(/\.html$/) || {}).input:
+            case (path.match(/\.apk$/) || {}).input:
 	        readFile(path, response);
                 break;
             case '/demomode/start': 
