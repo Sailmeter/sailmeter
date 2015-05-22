@@ -7,6 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Afterguard">
     <link href="/bootstrap.min.css" rel="stylesheet">
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+      #BLA, #BLO {
+        font-size: 48px;
+        font-weight: 600;
+      }
+      #BSP, #BHM, #WAS, #WAA {
+        font-size: 32px;
+        font-weight: 400;
+      }
+    </style>
   </head>
   <body style="padding-bottom:10rem;">
     <nav role="navigation" class="navbar navbar-default">
@@ -26,8 +37,71 @@
         </ul>
       </div>
     </nav>
-    <div class="container"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6"><h3>Latitude</h3><br><div id="BLA">- -</div></div>
+        <div class="col-md-6"><h3>Longitude</h3><br><div id="BLO">- -</div></div>
+      </div>   
+      <div class="row">
+        <div class="col-md-6"><h4>Boat Speed</h4><div id="BSP">- -</div></div>
+        <div class="col-md-6"><h4>Boat Heading (Mag)</h4><div id="BHM">- -</div></div>
+      </div>
+      <div class="row">
+        <div class="col-md-6"><h4>Wind Speed Apparent</h4><div id="WAS">- -</div></div>
+        <div class="col-md-6"><h4>Wind Angle Apparent</h4><div id="WAA">- -</div></div>
+      </div>
+    </div>
+
     <script src="/jquery.min.js"></script>
     <script src="/bootstrap.min.js"></script>
+    <script>
+      var socket = io.connect();
+ 
+      
+      function deg_to_dms (deg) {
+        var d = Math.floor (deg);
+        var minfloat = (deg-d)*60;
+        var m = Math.floor(minfloat);
+        var secfloat = (minfloat-m)*60;
+        var s = Math.round(secfloat*100)/100;
+        // After rounding, the seconds might become 60. These two
+        // if-tests are not necessary if no rounding is done.
+        if (s>=60) {
+          m++;
+          s=s-60;
+        }
+        if (m==60) {
+          d++;
+          m=0;
+        }
+        return ("" + d + "&deg; " + m + "' " + s + "''");
+      }
+
+
+      function getNmea() {
+        console.log("Setting up Channel: nmea");
+        socket.on("nmea", function(data){
+          var d = JSON.parse(data);
+          if (d.length) {
+            for (var i=0; i < d.length; i++) {
+              var json = d[i];
+              $.each(json, function(key, value) {
+                $el = $('#' + key);
+                if ($el) {
+                  if (key == "BLA" || key == "BLO") {
+                    value.value = deg_to_dms(value.value);
+                  }
+                  $el.html(value.value + " " + value.units);
+                } else {
+                  console.log(key + ": " + value);
+                }
+              });
+            }
+          }
+        });
+      }
+      getNmea();
+    </script>
+
   </body>
 </html>
