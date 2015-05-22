@@ -181,6 +181,36 @@ var server = http.createServer(function(request, response){
 		  }
                 });
 		break;
+            case '/admin/polars/show': 
+		try {
+		  var polars = JSON.parse(fs.readFileSync(__dirname + '/polars.json', 'utf8'));
+                  response.writeHead(200, {"Content-Type": "text/html"});
+                  response.write(JSON.stringify(polars));
+		} catch (exception) {
+                  response.writeHead(500, {'Content-Type': 'text/html'});
+		  var error = {exception: exception.message};
+                  response.write(JSON.stringify(error));
+		} finally {
+                  response.end();
+		}
+		break;
+            case '/admin/polars/edit': 
+                parsePost(request, function(data) {
+		  var obj = querystring.parse(data);
+		  try {
+		     var json = JSON.parse(obj.polars);
+		     fs.writeFileSync(__dirname + '/polars.json', JSON.stringify(json, null, 4), 'utf8');
+                     response.writeHead(200, {"Content-Type": "text/html"});
+                     response.write("file received");
+		  } catch (exception) {
+                    response.writeHead(500, {'Content-Type': 'text/html'});
+		    var error = {exception: exception.message};
+                    response.write(JSON.stringify(error));
+		  } finally {
+                    response.end();
+		  }
+                });
+		break;
             default:
                 response.writeHead(404);
                 response.write("opps this doesn't exist - 404");
