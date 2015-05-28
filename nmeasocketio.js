@@ -263,8 +263,8 @@ function writeData(port, sentence) {
         currentlon = -1 * currentlon;
       }
     }
-    if (object.BSP) {
-      currentspeed = object.BSP.value;
+    if (object.BST) {
+      currentspeed = object.BST.value;
     }
   } catch (exception) {
     var err = {port: port, timestamp: Date.now(), sentence: sentence, exception: exception.message};

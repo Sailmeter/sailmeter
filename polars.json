@@ -1,3 +1,50 @@
 {
-    "BSP": "10"
+    "9": {
+        "WAPUT": "9",
+        "WAPDT": "90",
+        "WAPUA": "9",
+        "WAPDA": "90",
+        "BSPU": 9,
+        "BSPD": 9
+    },
+    "10": {
+        "WAPUT": "10",
+        "WAPDT": "100",
+        "WAPUA": "10",
+        "WAPDA": "100",
+        "BSPU": 10,
+        "BSPD": 10
+    },
+    "11": {
+        "WAPUT": "11",
+        "WAPDT": "110",
+        "WAPUA": "11",
+        "WAPDA": "110",
+        "BSPU": 11,
+        "BSPD": 11
+    },
+    "12": {
+        "WAPUT": "12",
+        "WAPDT": "120",
+        "WAPUA": "12",
+        "WAPDA": "120",
+        "BSPU": 12,
+        "BSPD": 12
+    },
+    "13": {
+        "WAPUT": "13",
+        "WAPDT": "130",
+        "WAPUA": "13",
+        "WAPDA": "130",
+        "BSPU": 13,
+        "BSPD": 13
+    },
+    "20": {
+        "WAPUT": "14.99",
+        "WAPDT": "15.99",
+        "WAPUA": "30.99",
+        "WAPDA": "17.99",
+        "BSPU": 19.99,
+        "BSPD": 21
+    }
 }

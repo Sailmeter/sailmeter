@@ -1,18 +1,51 @@
 {
-    "IIVWR": {
-        "WAA": {
+    "IIDBT": {},
+    "IIGLL": {
+        "BLA": {
             "value": "1",
             "units": "2"
         },
-        "WSA": {
+        "BLO": {
             "value": "3",
             "units": "4"
+        }
+    },
+    "GPGGA": {
+        "BLA": {
+            "value": "2",
+            "units": "3"
+        },
+        "BLO": {
+            "value": "4",
+            "units": "5"
+        }
+    },
+    "GPGSA": {},
+    "GPGSV": {},
+    "IIHDG": {
+        "BHM": {
+            "value": "1",
+            "code": "0"
+        }
+    },
+    "IIHDM": {
+        "BHM": {
+            "value": "1",
+            "code": "0"
+        }
+    },
+    "IIMTA": {},
+    "IIMTW": {},
+    "IIMWD": {
+        "WST": {
+            "value": "5",
+            "units": "6"
         }
     },
     "IIMWV": {
         "WAA": {
             "value": "1",
-            "units": "2",
+            "code": "C",
             "conditional": {
                 "value": "2",
                 "equals": "R"
@@ -20,15 +53,11 @@
         },
         "WSA": {
             "value": "3",
-            "units": "4",
-            "conditional": {
-                "value": "2",
-                "equals": "R"
-            }
+            "code": "N"
         },
         "WAT": {
             "value": "1",
-            "units": "2",
+            "code": "C",
             "conditional": {
                 "value": "2",
                 "equals": "T"
@@ -43,10 +72,39 @@
             }
         }
     },
-    "IIVHW": {
-        "BHT": {
+    "WIMWV": {
+        "WAA": {
             "value": "1",
-            "units": "2"
+            "code": "C"
+        },
+        "WSA": {
+            "value": "3",
+            "units": "4"
+        }
+    },
+    "GPRMC": {
+        "BLA": {
+            "value": "3",
+            "units": "4"
+        },
+        "BLO": {
+            "value": "5",
+            "units": "6"
+        },
+        "BST": {
+            "value": "7",
+            "code": "N"
+        },
+        "BHM": {
+            "value": "8",
+            "code": "17"
+        }
+    },
+    "IIVDR": {},
+    "IIVHW": {
+        "BHM": {
+            "value": "3",
+            "code": "0"
         },
         "BST": {
             "value": "5",
@@ -55,18 +113,20 @@
     },
     "VWVHW": {
         "BHM": {
+            "value": "3",
+            "code": "0"
+        },
+        "BHT": {
             "value": "1",
             "units": "2"
         },
-        "BHT": {
-            "value": "3",
-            "units": "4"
-        },
-        "BSP": {
+        "BST": {
             "value": "5",
-            "code": "K"
+            "units": "6"
         }
     },
+    "IIVLW": {},
+    "IIVPW": {},
     "GPVTG": {
         "BHT": {
             "value": "1",
@@ -74,42 +134,46 @@
         },
         "BHM": {
             "value": "3",
-            "units": "4"
+            "code": "0"
         },
-        "BST": {
+        "SOG": {
             "value": "5",
             "units": "6"
         }
     },
-    "GPGSA": {},
-    "GPRMC": {
-      "BLA": {
-        "value": "3",
-        "units": "4"
-      },
-      "BLO": {
-        "value": "5",
-        "units": "6"
-      },
-        "BSP": {
-            "value": "7",
-            "code": "K"
-        },
+    "IIVTG": {
         "BHT": {
-            "value": "8",
-            "code": "T"
+            "value": "1",
+            "units": "2"
+        },
+        "BHM": {
+            "value": "3",
+            "code": "0"
+        },
+        "SOG": {
+            "value": "5",
+            "units": "6"
         }
     },
-    "GPGGA": {
-      "BLA": {
-        "value": "2",
-        "units": "3"
-      },
-      "BLO": {
-        "value": "4",
-        "units": "5"
-      }
+    "IIVWR": {
+        "WAA": {
+            "value": "1",
+            "units": "2"
+        },
+        "WSA": {
+            "value": "3",
+            "units": "4"
+        }
     },
-    "GPGSV": {
-    }
+    "IIVWT": {
+        "WAT": {
+            "value": "1",
+            "units": "2"
+        },
+        "WST": {
+            "value": "3",
+            "units": "4"
+        }
+    },
+    "YXXDR": {}
 }
