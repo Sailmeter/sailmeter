@@ -39,5 +39,8 @@
     "superagent": "^0.21.0",
     "supertest": "0.13.x"
   },
+  "scripts": {
+    "upgrade": "git stash && git pull && git stash pop && npm install --production"
+  }
   "optionalDependencies": {}
 }
