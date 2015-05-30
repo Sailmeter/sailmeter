@@ -40,7 +40,7 @@
     "supertest": "0.13.x"
   },
   "scripts": {
-    "install": "git stash && git pull && git stash pop && npm install --production"
-  }
+    "preinstall": "git stash && git pull && git stash pop"
+  },
   "optionalDependencies": {}
 }
