@@ -62,6 +62,7 @@ var server = http.createServer(function(request, response){
 	        readFile(path, response);
                 break;
             case '/demomode/start': 
+	      filename = "nmeademo.txt";
               writeFileToSocketIO();
               response.writeHead(200, {"Content-Type": "text/html"});
               response.write("demomode started");
