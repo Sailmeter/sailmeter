@@ -309,7 +309,7 @@ function runStartLineFix(startlinefix) {
       function() { 
         runStartLineFix(startlinefix);
       }, 
-    1000);
+    500);
   }
 }
 
@@ -324,7 +324,7 @@ function writeFileToSocketIO() {
         runningDemoMode = false;
         setTimeout(function() {
         writeFileToSocketIO();
-        },1000);			
+        },500);			
       }
     });
     stream.on('error', function(err) {
@@ -337,7 +337,7 @@ function writeFileToSocketIO() {
       }
       writeTimeout = setTimeout(function() {
           stream.resume();
-      }, 1000);
+      }, 500);
     });
   }
 }
