@@ -298,8 +298,11 @@ function runStartLineFix(startlinefix) {
     if (startlinefix.easting == "W") {
       startpoint.y = -1 * startpoint.y;
     }
+    io.emit('err', JSON.stringify([startpoint], null, 2));
     var startline = ivector.getLine(startpoint, startlinefix.bearing, 1/3600);
+    io.emit('err', JSON.stringify([startline], null, 2));
     var distance = ivector.getDistance({x: currentlat, y: currentlon}, startline);
+    io.emit('err', JSON.stringify([distance], null, 2));
     io.emit('dtl', [distance]);
     if (countdown) {
       var timetokill = countdown - (distance / currentspeed)*3600;
