@@ -301,6 +301,7 @@ function runStartLineFix(startlinefix) {
     io.emit('err', JSON.stringify([startpoint], null, 2));
     var startline = ivector.getLine(startpoint, startlinefix.bearing, 1/3600);
     io.emit('err', JSON.stringify([startline], null, 2));
+    io.emit('err', JSON.stringify([{x: currentlat, y: currentlon}], null, 2));
     var distance = ivector.getDistance({x: currentlat, y: currentlon}, startline);
     io.emit('err', JSON.stringify([distance], null, 2));
     io.emit('dtl', [distance]);
