@@ -88,11 +88,19 @@ var server = http.createServer(function(request, response){
               break;
             case '/demostartmode/stop': 
               runningDemoMode = false;
+	      startlinefix = 0;
               try {
                 clearTimeout(writeTimeout);
               }
               catch(err) {
+                console.log("clearTimeout(writeTimeout): " + e);
 	      }
+              try {
+                 clearTimeout(startlinefixTimeout);
+              }
+              catch(err) {
+                console.log("clearTimeout(startlinefixTimeout): " + e);
+              }
               response.writeHead(200, {"Content-Type": "text/html"});
               response.write("demostartmode stopped");
               response.end();

@@ -45,13 +45,50 @@ module.exports = {
       distance = Math.abs(point.x * 0.1);
     }
     var point2 = {};
-    point2.x = parseFloat(point.x) + Math.cos(angle*Math.PI/180) * distance;
-    point2.y = parseFloat(point.y) + Math.sin(angle*Math.PI/180) * distance;
+    point2.x = (parseFloat(point.x) + Math.cos(angle*Math.PI/180) * distance).toFixed(15);
+    point2.y = (parseFloat(point.y) + Math.sin(angle*Math.PI/180) * distance).toFixed(15);
 
-    return point2;
+    var line = {start: point, end: point2};
+
+    return line;
   },
 
-  getDistance: function(point1, point2) {
-    return Math.sqrt( (point2.x-=point1.x)*point2.x + (point2.y-=point1.y)*point2.y );
+  getDistance: function(point, line) {
+    var x = point.x;
+    var y = point.y;
+    var x1 = line.start.x;
+    var y1 = line.start.y;
+    var x2 = line.end.x;
+    var y2 = line.end.y;
+
+    var A = x - x1;
+    var B = y - y1;
+    var C = x2 - x1;
+    var D = y2 - y1;
+
+    var dot = A * C + B * D;
+    var len_sq = C * C + D * D;
+    var param = -1;
+    if (len_sq != 0) //in case of 0 length line
+      param = dot / len_sq;
+
+    var xx, yy;
+
+    if (param < 0) {
+      xx = x1;
+      yy = y1;
+    }
+    else if (param > 1) {
+      xx = x2;
+      yy = y2;
+    }
+    else {
+      xx = x1 + param * C;
+      yy = y1 + param * D;
+    }
+
+    var dx = x - xx;
+    var dy = y - yy;
+    return Math.sqrt(dx * dx + dy * dy);
   }
 }
