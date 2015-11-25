@@ -6,6 +6,8 @@
 var utils = require("./utils.js");
 var fs = require('fs');
 
+var Helper = require("./NMEAHelper.js");
+
 /** NMEA module */
 var NMEA = ( function() {
 
@@ -131,6 +133,12 @@ var NMEA = ( function() {
 	        result[prop].units = obj[prop].code;
 	      }
 	    }
+            if (obj[prop].conversion) {
+              var fn = obj[prop].conversion;
+              if (typeof Helper[fn] === 'function') {
+                result[prop].value = Helper[fn](result[prop].value, result[prop].units);
+              }
+            }
           }
 	}
 

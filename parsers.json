@@ -3,21 +3,25 @@
     "IIGLL": {
         "BLA": {
             "value": "1",
-            "units": "2"
+            "units": "2",
+            "conversion": "parseLatitude"
         },
         "BLO": {
             "value": "3",
-            "units": "4"
+            "units": "4",
+            "conversion": "parseLongitude"
         }
     },
     "GPGGA": {
         "BLA": {
             "value": "2",
-            "units": "3"
+            "units": "3",
+            "conversion": "parseLatitude"
         },
         "BLO": {
             "value": "4",
-            "units": "5"
+            "units": "5",
+            "conversion": "parseLongitude"
         }
     },
     "GPGSA": {},
@@ -85,19 +89,21 @@
     "GPRMC": {
         "BLA": {
             "value": "3",
-            "units": "4"
+            "units": "4",
+            "conversion": "parseLatitude"
         },
         "BLO": {
             "value": "5",
-            "units": "6"
+            "units": "6",
+            "conversion": "parseLongitude"
         },
-        "BST": {
+        "SOG": {
             "value": "7",
             "code": "N"
         },
         "BHM": {
             "value": "8",
-            "code": "17"
+            "code": "T"
         }
     },
     "IIVDR": {},
@@ -106,9 +112,9 @@
             "value": "3",
             "code": "0"
         },
-        "BST": {
+        "BSP": {
             "value": "5",
-            "units": "6"
+            "code": "N"
         }
     },
     "VWVHW": {
@@ -120,9 +126,9 @@
             "value": "1",
             "units": "2"
         },
-        "BST": {
+        "BSP": {
             "value": "5",
-            "units": "6"
+            "code": "N"
         }
     },
     "IIVLW": {},
