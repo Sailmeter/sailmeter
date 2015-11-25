@@ -262,15 +262,9 @@ function writeData(port, sentence) {
     io.emit('nmea', JSON.stringify([object], null, 2));
     if (object.BLA) {
       currentlat = object.BLA.value;
-      if (object.BLA.units == "S") {
-        currentlat = -1 * currentlat;
-      }
     }
     if (object.BLO) {
       currentlon = object.BLO.value;
-      if (object.BLO.units == "W") {
-        currentlon = -1 * currentlon;
-      }
     }
     if (object.BST) {
       currentspeed = object.BST.value;
@@ -300,18 +294,8 @@ var startlinefixTimeout = null;
 function runStartLineFix(startlinefix) {
   if (startlinefix && currentlat && currentlon && currentspeed) {
     var startpoint = {x: startlinefix.latitude, y: startlinefix.longitude};
-    if (startlinefix.hemi == "S") {
-      startpoint.x = -1 * startpoint.x;
-    }
-    if (startlinefix.easting == "W") {
-      startpoint.y = -1 * startpoint.y;
-    }
-    io.emit('err', JSON.stringify([startpoint], null, 2));
     var startline = ivector.getLine(startpoint, startlinefix.bearing, 1/3600);
-    io.emit('err', JSON.stringify([startline], null, 2));
-    io.emit('err', JSON.stringify([{x: currentlat, y: currentlon}], null, 2));
     var distance = ivector.getDistance({x: currentlat, y: currentlon}, startline);
-    io.emit('err', JSON.stringify([distance], null, 2));
     io.emit('dtl', [distance]);
     if (countdown) {
       var timetokill = countdown - (distance / currentspeed)*3600;
