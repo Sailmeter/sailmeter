@@ -59,8 +59,8 @@
  
       
       function deg_to_dms (deg) {
-        var d = Math.floor (deg);
-        var minfloat = (deg-d)*60;
+        var d = Math.floor (Math.abs(deg));
+        var minfloat = (Math.abs(deg)-d)*60;
         var m = Math.floor(minfloat);
         var secfloat = (minfloat-m)*60;
         var s = Math.round(secfloat*100)/100;
@@ -74,7 +74,7 @@
           d++;
           m=0;
         }
-        return ("" + Math.abs(d) + "&deg; " + m + "' " + s + "''");
+        return ("" + d + "&deg; " + m + "' " + s + "''");
       }
 
 
