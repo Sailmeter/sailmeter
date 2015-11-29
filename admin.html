@@ -10,7 +10,12 @@
     <script src="/socket.io/socket.io.js"></script>
     <style>
 #raw{
-height: 260px;
+height: 210px;
+width:100%;
+overflow:hidden;
+}
+#nmea{
+height: 150px;
 width:100%;
 overflow:hidden;
 }
@@ -53,6 +58,17 @@ overflow:hidden;
         }
       });
 
+      socket.on('nmea', function(data){
+        var dataEl = $('#nmea');
+        var d = JSON.parse(data);
+        for (var i=0; i < d.length; i++) {
+          dataEl.prepend(JSON.stringify(d[i]) + "<br>");
+        }
+        if (dataEl.children().length > 20) {
+          dataEl.children()[20].remove();
+        }
+      });
+
       socket.on('err', function(data){
         var dataEl = $('#err');
         var d = JSON.parse(data);
@@ -77,8 +93,6 @@ overflow:hidden;
     <a href="/demomode/start">Start</a>
     <br>
     <a href="/demomode/stop">Stop</a>
-    <br>
-    <a href="/startcountdown/300">Start 5 min countdown</a>
     <p>
     <h4>Start Demo</h4>
     <a href="/demostartmode/start">Start</a>
@@ -86,11 +100,17 @@ overflow:hidden;
     <a href="/demostartmode/stop">Stop</a>
     <br>
     <a href="/startlinefix/49.260506746458255/N/-123.18586086244291/W/290">Take Fix</a>
+    <br>
+    <a href="/startcountdown/300">Start 5 min countdown</a>
   </div>
   <div class="col-md-8">
     <div class="row">
       <b>raw</b>
       <div id="raw"></div>
+    </div>
+    <div class="row">
+      <b>nmea</b>
+      <div id="nmea"></div>
     </div>
     <div class="row">
       <b>err</b>
