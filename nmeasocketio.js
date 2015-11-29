@@ -266,8 +266,8 @@ function writeData(port, sentence) {
     if (object.BLO) {
       currentlon = object.BLO.value;
     }
-    if (object.BST) {
-      currentspeed = object.BST.value;
+    if (object.BSP) {
+      currentspeed = object.BSP.value;
     }
   } catch (exception) {
     var err = {port: port, timestamp: Date.now(), sentence: sentence, exception: exception.message};
