@@ -130,6 +130,7 @@ var server = http.createServer(function(request, response){
                 response.end();
                 break;
 	    case '/stopcountdown': 
+                response.writeHead(200, {'Content-Type': 'text/html'});
                 if (countdownTimeout != null) {
                   try {
                     clearTimeout(countdownTimeout);
@@ -138,6 +139,8 @@ var server = http.createServer(function(request, response){
                     console.log("clearTimeout(countdownTimeout): " + err);
                   }
                 }
+		response.write("stopped countdown");
+                response.end();
 		break;
             case (path.match(/^\/startlinefix/) || {}).input:
                 var parts = path.split("/");
@@ -156,6 +159,7 @@ var server = http.createServer(function(request, response){
 		runStartLineFix(startlinefix);
                 break;
 	    case '/stoplinefix': 
+                response.writeHead(200, {'Content-Type': 'text/html'});
                 if (startlinefixTimeout != null) {
                   try {
                     clearTimeout(startlinefixTimeout);
@@ -164,6 +168,8 @@ var server = http.createServer(function(request, response){
                     console.log("clearTimeout(startlinefixTimeout): " + err);
                   }
                 }
+		response.write("stopped linefix");
+                response.end();
 		break;
             case '/admin/parsers/show': 
 		try {
