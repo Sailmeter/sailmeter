@@ -8,6 +8,7 @@ var utils = require("./utils.js");
 var seriallistener = require('./seriallistener');
 var ivector = require('./intersect');
 var mime = require('mime');
+var LatLong = require('./latlon-spherical');
 
 var http = require('http');
 
@@ -283,7 +284,6 @@ function runCountDown() {
     io.emit('countdown', countdown); 
     countdownTimeout = setTimeout(
       function() { 
-	--countdown;
         runCountDown();
       }, 
     1000);
@@ -294,13 +294,22 @@ var startlinefixTimeout = null;
 
 function runStartLineFix(startlinefix) {
   if (startlinefix && currentlat && currentlon && currentspeed) {
+  /*
     var startpoint = {x: startlinefix.latitude, y: startlinefix.longitude};
     var startline = ivector.getLine(startpoint, startlinefix.bearing, 1/3600);
     var distance = ivector.getDistance({x: currentlat, y: currentlon}, startline);
     io.emit('dtl', [distance*1852]); // convert dtl into meters
+  */
+
+    var startlinepoint = new LatLong(startlinefix.latitude, startlinefix.longitude);
+    var endlinepoint = startlinepoint.destinationPoint(100, startlinefix.bearing);
+    var currentpoint = new LatLong(currentlat, currentlon);
+    var distance = Math.abs(currentpoint.crossTrackDistanceTo(startlinepoint, endlinepoint));
+
+    io.emit('dtl', [distance]); // convert dtl into meters
+
     if (countdown) {
       var timetokill = countdown - (distance / currentspeed)*3600;
-      io.emit('err', [countdown]); 
       io.emit('ttk', [timetokill]); 
     }
     startlinefixTimeout = setTimeout(
