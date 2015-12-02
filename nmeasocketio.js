@@ -75,6 +75,7 @@ var server = http.createServer(function(request, response){
                 clearTimeout(writeTimeout);
               }
               catch(err) {
+                console.log("clearTimeout(writeTimeout): " + err);
 	      }
               response.writeHead(200, {"Content-Type": "text/html"});
               response.write("demomode stopped");
@@ -94,13 +95,13 @@ var server = http.createServer(function(request, response){
                 clearTimeout(writeTimeout);
               }
               catch(err) {
-                console.log("clearTimeout(writeTimeout): " + e);
+                console.log("clearTimeout(writeTimeout): " + err);
 	      }
               try {
                  clearTimeout(startlinefixTimeout);
               }
               catch(err) {
-                console.log("clearTimeout(startlinefixTimeout): " + e);
+                console.log("clearTimeout(startlinefixTimeout): " + err);
               }
               response.writeHead(200, {"Content-Type": "text/html"});
               response.write("demostartmode stopped");
@@ -117,6 +118,7 @@ var server = http.createServer(function(request, response){
                       clearTimeout(countdownTimeout);
                     }
                     catch(err) {
+                      console.log("clearTimeout(countdownTimeout): " + err);
                     }
                   }
                   runCountDown(countdown);
@@ -133,6 +135,7 @@ var server = http.createServer(function(request, response){
                     clearTimeout(countdownTimeout);
                   }
                   catch(err) {
+                    console.log("clearTimeout(countdownTimeout): " + err);
                   }
                 }
 		break;
@@ -147,6 +150,7 @@ var server = http.createServer(function(request, response){
                     clearTimeout(startlinefixTimeout);
                   }
                   catch(err) {
+                    console.log("clearTimeout(startlinefixTimeout): " + err);
                   }
                 }
 		runStartLineFix(startlinefix);
@@ -157,6 +161,7 @@ var server = http.createServer(function(request, response){
                     clearTimeout(startlinefixTimeout);
                   }
                   catch(err) {
+                    console.log("clearTimeout(startlinefixTimeout): " + err);
                   }
                 }
 		break;
@@ -255,7 +260,7 @@ var currentspeed = null;
 
 function writeData(port, sentence) {
   try {
-    console.log(port + ": " + new Date().toString() + ": " + sentence);
+    //console.log(port + ": " + new Date().toString() + ": " + sentence);
     var raw = {port: port, timestamp: Date.now(), sentence: sentence};
     io.emit('raw', JSON.stringify([raw], null, 2));
     var object = nmea.parse(sentence)
@@ -294,24 +299,26 @@ function runCountDown() {
 var startlinefixTimeout = null;
 
 function runStartLineFix(startlinefix) {
-  if (startlinefix && currentlat && currentlon && currentspeed) {
-  /*
-    var startpoint = {x: startlinefix.latitude, y: startlinefix.longitude};
-    var startline = ivector.getLine(startpoint, startlinefix.bearing, 1/3600);
-    var distance = ivector.getDistance({x: currentlat, y: currentlon}, startline);
-    io.emit('dtl', [distance*1852]); // convert dtl into meters
-  */
+  clearTimeout(startlinefixTimeout);
+  if (startlinefix && currentlat && currentlon) {
+    try {
+      var startlinepoint = new LatLong(startlinefix.latitude, startlinefix.longitude);
+      var endlinepoint = startlinepoint.destinationPoint(100, startlinefix.bearing);
+      var currentpoint = new LatLong(currentlat, currentlon);
+      var distance = Math.abs(currentpoint.crossTrackDistanceTo(startlinepoint, endlinepoint));
+  
+      io.emit('dtl', [distance]); // convert dtl into meters
 
-    var startlinepoint = new LatLong(startlinefix.latitude, startlinefix.longitude);
-    var endlinepoint = startlinepoint.destinationPoint(100, startlinefix.bearing);
-    var currentpoint = new LatLong(currentlat, currentlon);
-    var distance = Math.abs(currentpoint.crossTrackDistanceTo(startlinepoint, endlinepoint));
-
-    io.emit('dtl', [distance]); // convert dtl into meters
-
-    if (countdown) {
-      var timetokill = countdown - ((distance/1852) / currentspeed)*3600;
-      io.emit('ttk', [timetokill]); 
+      if (countdown) {
+	if (currentspeed > 0) {
+          var timetokill = countdown - ((distance/1852) / currentspeed)*3600;
+          io.emit('ttk', [timetokill]); 
+	} else {
+          io.emit('ttk', ['-1']); 
+	}
+      }
+    } catch(err) {
+      console.log("runStartLineFix: " + err);
     }
     startlinefixTimeout = setTimeout(
       function() { 
