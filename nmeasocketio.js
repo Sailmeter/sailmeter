@@ -284,6 +284,7 @@ function runCountDown() {
     io.emit('countdown', countdown); 
     countdownTimeout = setTimeout(
       function() { 
+	countdown--;
         runCountDown();
       }, 
     1000);
@@ -309,7 +310,7 @@ function runStartLineFix(startlinefix) {
     io.emit('dtl', [distance]); // convert dtl into meters
 
     if (countdown) {
-      var timetokill = countdown - (distance / currentspeed)*3600;
+      var timetokill = countdown - ((distance/1852) / currentspeed)*3600;
       io.emit('ttk', [timetokill]); 
     }
     startlinefixTimeout = setTimeout(
