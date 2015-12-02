@@ -266,8 +266,8 @@ function writeData(port, sentence) {
     if (object.BLO) {
       currentlon = object.BLO.value;
     }
-    if (object.BSP) {
-      currentspeed = object.BSP.value;
+    if (object.SOG) {
+      currentspeed = object.SOG.value;
     }
   } catch (exception) {
     var err = {port: port, timestamp: Date.now(), sentence: sentence, exception: exception.message};
@@ -278,12 +278,13 @@ function writeData(port, sentence) {
 
 var countdownTimeout = null;
 
-function runCountDown(countdown) {
+function runCountDown() {
   if (countdown >= 0) {
     io.emit('countdown', countdown); 
     countdownTimeout = setTimeout(
       function() { 
-        runCountDown(--countdown);
+	--countdown;
+        runCountDown();
       }, 
     1000);
   }
@@ -296,9 +297,10 @@ function runStartLineFix(startlinefix) {
     var startpoint = {x: startlinefix.latitude, y: startlinefix.longitude};
     var startline = ivector.getLine(startpoint, startlinefix.bearing, 1/3600);
     var distance = ivector.getDistance({x: currentlat, y: currentlon}, startline);
-    io.emit('dtl', [distance]);
+    io.emit('dtl', [distance*1852]); // convert dtl into meters
     if (countdown) {
       var timetokill = countdown - (distance / currentspeed)*3600;
+      io.emit('err', [countdown]); 
       io.emit('ttk', [timetokill]); 
     }
     startlinefixTimeout = setTimeout(
