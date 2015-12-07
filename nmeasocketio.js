@@ -17,6 +17,10 @@ var startDemoMode = false;
 var filename = null;
 var countdown = 0;
 
+var startlinepoint = null;
+var endlinepoint = null;
+var startlinebearing = null;
+
 if (process.argv[2] == "-demo") {
   startDemoMode = true;
   filename = "nmeademo.txt";
@@ -156,7 +160,10 @@ var server = http.createServer(function(request, response){
                     console.log("clearTimeout(startlinefixTimeout): " + err);
                   }
                 }
-		runStartLineFix(startlinefix);
+                startlinepoint = new LatLong(startlinefix.latitude, startlinefix.longitude);
+                endlinepoint = startlinepoint.destinationPoint(100, startlinefix.bearing);
+		startlinebearing = startlinefix.bearing;
+		runStartLineFix();
                 break;
 	    case '/stoplinefix': 
                 response.writeHead(200, {'Content-Type': 'text/html'});
@@ -281,6 +288,9 @@ function writeData(port, sentence) {
     if (object.SOG) {
       currentspeed = object.SOG.value;
     }
+    if (object.BHT) {
+      courseoverground = object.BHT.value;
+    }
   } catch (exception) {
     var err = {port: port, timestamp: Date.now(), sentence: sentence, exception: exception.message};
     io.emit('err', JSON.stringify([err], null, 2));
@@ -304,31 +314,35 @@ function runCountDown() {
 
 var startlinefixTimeout = null;
 
-function runStartLineFix(startlinefix) {
+function runStartLineFix() {
   clearTimeout(startlinefixTimeout);
-  if (startlinefix && currentlat && currentlon) {
+  if (startlinepoint && endlinepoint && startlinebearing && currentlat && currentlon) {
     try {
-      var startlinepoint = new LatLong(startlinefix.latitude, startlinefix.longitude);
-      var endlinepoint = startlinepoint.destinationPoint(100, startlinefix.bearing);
       var currentpoint = new LatLong(currentlat, currentlon);
       var distance = Math.abs(currentpoint.crossTrackDistanceTo(startlinepoint, endlinepoint));
   
       io.emit('dtl', [distance]); // convert dtl into meters
 
       if (countdown) {
-	if (currentspeed > 0) {
-          var timetokill = countdown - ((distance/1852) / currentspeed)*3600;
-          io.emit('ttk', [timetokill]); 
-	} else {
-          io.emit('ttk', ['-1']); 
-	}
+          //var timetokill = countdown - ((distance/1852) / currentspeed)*3600;
+	  var angletoline = Math.abs(courseoverground - startlinebearing);
+	  if (angletoline > 90) {
+	    angletoline = 180 - angletoline;
+	  }
+	  var vmg = currentspeed * Math.cos(angletoline * (Math.PI / 180));
+	  if (vmg == 0) {
+            io.emit('ttk', ['-1']); 
+	  } else {
+  	    var timetokill = distance / vmg;
+            io.emit('ttk', [timetokill]); 
+	  }
       }
     } catch(err) {
       console.log("runStartLineFix: " + err);
     }
     startlinefixTimeout = setTimeout(
       function() { 
-        runStartLineFix(startlinefix);
+        runStartLineFix();
       }, 
     500);
   }
