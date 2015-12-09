@@ -319,9 +319,9 @@ function runStartLineFix() {
   if (startlinepoint && endlinepoint && startlinebearing && currentlat && currentlon) {
     try {
       var currentpoint = new LatLong(currentlat, currentlon);
-      var distance = Math.abs(currentpoint.crossTrackDistanceTo(startlinepoint, endlinepoint));
+      var distance = Math.abs(currentpoint.crossTrackDistanceTo(startlinepoint, endlinepoint)); // in meters
   
-      io.emit('dtl', [distance]); // convert dtl into meters
+      io.emit('dtl', [distance]);
 
       if (countdown) {
           //var timetokill = countdown - ((distance/1852) / currentspeed)*3600;
@@ -333,7 +333,7 @@ function runStartLineFix() {
 	  if (vmg == 0) {
             io.emit('ttk', ['-1']); 
 	  } else {
-  	    var timetokill = distance / vmg;
+  	    var timetokill = distance / vmg / (1852 / 3600);
             io.emit('ttk', [timetokill]); 
 	  }
       }
