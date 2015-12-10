@@ -69,6 +69,23 @@ var server = http.createServer(function(request, response){
             case (path.match(/\.apk$/) || {}).input:
 	        readFile(path, response);
                 break;
+            case '/update': 
+		var spawn = require('child_process').spawn,
+	        git = spawn('git', ['pull']);
+
+                response.writeHead(200, {"Content-Type": "text/html"});
+		git.stdout.on('data', function (data) {
+                  response.write(data);
+		});
+
+		git.stderr.on('data', function (data) {
+                  response.write(data);
+		});
+
+		git.on('close', function (code) {
+                  response.end();
+		});
+	        break;
             case '/demomode/start': 
 	      filename = "nmeademo.txt";
               writeFileToSocketIO();
