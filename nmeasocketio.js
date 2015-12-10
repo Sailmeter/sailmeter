@@ -60,6 +60,9 @@ var server = http.createServer(function(request, response){
             case '/':
 	        readFile("/index.html", response);
                 break;
+            case '/version':
+	        readFile("/version.txt", response);
+                break;
             case (path.match(/\.css$/) || {}).input:
             case (path.match(/\.js$/) || {}).input:
             case (path.match(/\.html$/) || {}).input:
