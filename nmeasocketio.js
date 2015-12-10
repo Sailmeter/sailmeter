@@ -23,7 +23,7 @@ var startlinebearing = null;
 
 if (process.argv[2] == "-demo") {
   startDemoMode = true;
-  filename = "nmeademo.txt";
+  filename = "nmeastartdemo.txt";
 }
 
 nmea.loadParsers();
