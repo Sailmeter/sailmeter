@@ -2,7 +2,7 @@
   "author": "Mark Allen <mark@sailmeter.com>",
   "name": "serial",
   "description": "Serial Port Manager",
-  "version": "0.9.1",
+  "version": "0.9.5",
   "homepage": "http://www.sailmeter.com/",
   "main": "app",
   "engines": {
