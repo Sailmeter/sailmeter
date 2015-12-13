@@ -1,50 +1,75 @@
 {
-    "9": {
-        "WAPUT": "9",
-        "WAPDT": "90",
-        "WAPUA": "9",
+    "4": {
+        "WAPUT": "45",
+        "WAPDT": "140",
+        "WAPUA": "23",
+        "WAPDA": "74",
+        "BSPU": "3.78",
+        "BSPD": "3.81"
+    },
+    "5": {
+        "WAPUT": "44",
+        "WAPDT": "142",
+        "WAPUA": "18",
+        "WAPDA": "785",
+        "BSPU": "4.48",
+        "BSPD": "4.56"
+    },
+    "6": {
+        "WAPUT": "43",
+        "WAPDT": "143",
+        "WAPUA": "12",
+        "WAPDA": "82",
+        "BSPU": "5.2",
+        "BSPD": "5.31"
+    },
+    "7": {
+        "WAPUT": "42",
+        "WAPDT": "146",
+        "WAPUA": "17",
         "WAPDA": "90",
-        "BSPU": 9,
-        "BSPD": 9
+        "BSPU": "5.25",
+        "BSPD": "5.78"
+    },
+    "8": {
+        "WAPUT": "41",
+        "WAPDT": "149",
+        "WAPUA": "23",
+        "WAPDA": "98",
+        "BSPU": "5.31",
+        "BSPD": "6.25"
+    },
+    "9": {
+        "WAPUT": "39",
+        "WAPDT": "151",
+        "WAPUA": "23",
+        "WAPDA": "107",
+        "BSPU": "5.76",
+        "BSPD": "6.54"
     },
     "10": {
-        "WAPUT": "10",
-        "WAPDT": "100",
-        "WAPUA": "10",
-        "WAPDA": "100",
-        "BSPU": 10,
-        "BSPD": 10
+        "WAPUT": "38",
+        "WAPDT": "153",
+        "WAPUA": "23",
+        "WAPDA": "115",
+        "BSPU": "6.21",
+        "BSPD": "6.83"
     },
     "11": {
-        "WAPUT": "11",
-        "WAPDT": "110",
-        "WAPUA": "11",
-        "WAPDA": "110",
-        "BSPU": 11,
-        "BSPD": 11
+        "WAPUT": "38",
+        "WAPDT": "154",
+        "WAPUA": "23",
+        "WAPDA": "120",
+        "BSPU": "6.27",
+        "BSPD": "7.1"
     },
     "12": {
-        "WAPUT": "12",
-        "WAPDT": "120",
-        "WAPUA": "12",
-        "WAPDA": "120",
-        "BSPU": 12,
-        "BSPD": 12
-    },
-    "13": {
-        "WAPUT": "13",
-        "WAPDT": "130",
-        "WAPUA": "13",
-        "WAPDA": "130",
-        "BSPU": 13,
-        "BSPD": 13
-    },
-    "20": {
-        "WAPUT": "14.99",
-        "WAPDT": "15.99",
-        "WAPUA": "30.99",
-        "WAPDA": "17.99",
-        "BSPU": 19.99,
-        "BSPD": 21
+        "WAPUT": "37",
+        "WAPDT": "155",
+        "WAPUA": "23",
+        "WAPDA": "125",
+        "BSPU": "6.33",
+        "BSPD": "7.37"
     }
 }
+

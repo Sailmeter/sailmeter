@@ -52,12 +52,16 @@
             "code": "C",
             "conditional": {
                 "value": "2",
-                "equals": "R"
+                "equals": "T"
             }
         },
         "WSA": {
             "value": "3",
-            "code": "N"
+            "units": "4",
+            "conditional": {
+                "value": "2",
+                "equals": "R"
+            }
         },
         "WAT": {
             "value": "1",
@@ -83,7 +87,7 @@
         },
         "WSA": {
             "value": "3",
-            "units": "4"
+            "units": "N"
         }
     },
     "GPRMC": {
@@ -104,6 +108,14 @@
         "BHT": {
             "value": "8",
             "code": "T"
+        },
+        "BST": {
+            "value": "7",
+            "code": "N"
+        },
+        "BHM": {
+            "value": "8",
+            "code": "17"
         }
     },
     "IIVDR": {},
@@ -112,9 +124,23 @@
             "value": "3",
             "code": "0"
         },
-        "BSP": {
+        "BST": {
             "value": "5",
             "code": "N"
+        }
+    },
+    "GPVHW": {
+        "BHM": {
+            "value": "3",
+            "code": "0"
+        },
+        "BHT": {
+            "value": "1",
+            "units": "2"
+        },
+        "BST": {
+            "value": "5",
+            "units": "N"
         }
     },
     "VWVHW": {
@@ -126,7 +152,7 @@
             "value": "1",
             "units": "2"
         },
-        "BSP": {
+        "BST": {
             "value": "5",
             "code": "N"
         }
@@ -172,6 +198,16 @@
         }
     },
     "IIVWT": {
+        "WAT": {
+            "value": "1",
+            "units": "2"
+        },
+        "WST": {
+            "value": "3",
+            "units": "4"
+        }
+    },
+    "GPVWT": {
         "WAT": {
             "value": "1",
             "units": "2"
