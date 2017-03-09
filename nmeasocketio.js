@@ -301,16 +301,16 @@ function writeData(port, sentence) {
       obj.timestamp = Date.now();
       io.emit('nmea', JSON.stringify([obj], null, 2));
       if (obj.BLA) {
-        currentlat = object.BLA.value;
+        currentlat = obj.BLA.value;
       }
       if (obj.BLO) {
-        currentlon = object.BLO.value;
+        currentlon = obj.BLO.value;
       }
       if (obj.SOG) {
-        currentspeed = object.SOG.value;
+        currentspeed = obj.SOG.value;
       }
       if (obj.BHT) {
-        courseoverground = object.BHT.value;
+        courseoverground = obj.BHT.value;
       }
     });
   } catch (exception) {
