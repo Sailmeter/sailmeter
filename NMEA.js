@@ -111,35 +111,7 @@ var NMEA = ( function() {
         }*/
 	
 	if (parsers[id]) {
-	  var obj = parsers[id];
-	  result = {};
-          for (var prop in obj) {
-	    if (obj[prop].conditional) {
-              if ( tokens[obj[prop].conditional.value] == obj[prop].conditional.equals) {
-	        result[prop] = {};
-	        result[prop].value = tokens[obj[prop].value];
-		if (obj[prop].units) {
-	          result[prop].units = tokens[obj[prop].units];
-		} else if (obj[prop].code) {
-	          result[prop].units = obj[prop].code;
-		}
-	      }
-	    } else {
-	      result[prop] = {};
-	      result[prop].value = tokens[obj[prop].value];
-	      if (obj[prop].units) {
-	        result[prop].units = tokens[obj[prop].units];
-              } else if (obj[prop].code) {
-	        result[prop].units = obj[prop].code;
-	      }
-	    }
-            if (obj[prop].conversion) {
-              var fn = obj[prop].conversion;
-              if (typeof Helper[fn] === 'function') {
-                result[prop].value = Helper[fn](result[prop].value, result[prop].units);
-              }
-            }
-          }
+          result = parseObj(tokens, parsers[id]);
 	}
 
         if(result === null) {
@@ -168,6 +140,51 @@ var NMEA = ( function() {
     nmea.setErrorHandler(function(e) {
         throw new Error('ERROR:' + e);
     });
+
+    function parseProp(tokens, obj, prop) {
+          var result = {};
+            if (obj[prop].conditional) {
+              if ( tokens[obj[prop].conditional.value] == obj[prop].conditional.equals) {
+                result[prop] = {};
+                result[prop].value = tokens[obj[prop].value];
+                if (obj[prop].units) {
+                  result[prop].units = tokens[obj[prop].units];
+                } else if (obj[prop].code) {
+                  result[prop].units = obj[prop].code;
+                }
+              }
+            } else {
+              result[prop] = {};
+              result[prop].value = tokens[obj[prop].value];
+              if (obj[prop].units) {
+                result[prop].units = tokens[obj[prop].units];
+              } else if (obj[prop].code) {
+                result[prop].units = obj[prop].code;
+              }
+            }
+            if (obj[prop].conversion) {
+              var fn = obj[prop].conversion;
+              if (typeof Helper[fn] === 'function') {
+                result[prop].value = Helper[fn](result[prop].value, result[prop].units);
+              }
+            }
+      return result;
+      }
+
+    function parseObj(tokens, obj) {
+          var result = [];
+          for (var prop in obj) {
+            if (obj[prop].type == "iterate") {
+              for (var i=1; i < tokens.length-1; i=i+2) {
+                var newTokens = [tokens[0], tokens[i], tokens[i+1]];
+                result.push(parseProp(newTokens, obj, prop));
+              }
+            } else {
+              result.push(parseProp(tokens, obj, prop));
+            }
+          }
+      return result;
+    }
 
     // return the module object
     return nmea;

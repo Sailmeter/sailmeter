@@ -297,20 +297,22 @@ function writeData(port, sentence) {
     var raw = {port: port, timestamp: Date.now(), sentence: sentence};
     io.emit('raw', JSON.stringify([raw], null, 2));
     var object = nmea.parse(sentence)
-    object.timestamp = Date.now();
-    io.emit('nmea', JSON.stringify([object], null, 2));
-    if (object.BLA) {
-      currentlat = object.BLA.value;
-    }
-    if (object.BLO) {
-      currentlon = object.BLO.value;
-    }
-    if (object.SOG) {
-      currentspeed = object.SOG.value;
-    }
-    if (object.BHT) {
-      courseoverground = object.BHT.value;
-    }
+    object.forEach(function(obj) {
+      obj.timestamp = Date.now();
+      io.emit('nmea', JSON.stringify([obj], null, 2));
+      if (obj.BLA) {
+        currentlat = object.BLA.value;
+      }
+      if (obj.BLO) {
+        currentlon = object.BLO.value;
+      }
+      if (obj.SOG) {
+        currentspeed = object.SOG.value;
+      }
+      if (obj.BHT) {
+        courseoverground = object.BHT.value;
+      }
+    });
   } catch (exception) {
     var err = {port: port, timestamp: Date.now(), sentence: sentence, exception: exception.message};
     io.emit('err', JSON.stringify([err], null, 2));
