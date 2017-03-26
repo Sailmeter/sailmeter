@@ -219,21 +219,21 @@
     },
     "YXXDR": {},
     "HEHDT": {
-      "BHT": {
-       "value": "2",
-       "code": "T"
-      }
+        "BHT": {
+            "value": "2",
+            "code": "T"
+        }
     },
     "HEROT": {},
     "VWVBW": {},
     "PSTXR": {},
     "AIALR": {},
-    "AIHBT": {},  
-    "SPAG1": {
-      "AG1": {
-        "value": "1",
-        "units": "2",
-        "type": "iterate"
-      }
+    "AIHBT": {},
+    "PRAG1": {
+        "AG1": {
+            "value": "1",
+            "units": "2",
+            "type": "iterate"
+        }
     }
 }
