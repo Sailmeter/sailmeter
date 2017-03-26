@@ -82,7 +82,7 @@ var NMEA = ( function() {
         // This version implements approach #2
         id = tokens[0].substring(1);
         if(id.length !== 5) {
-            this.error('i must be exactly 5 characters');
+            this.error(id.length + ': i must be exactly 5 characters');
             return null;
         }
 
@@ -144,7 +144,7 @@ var NMEA = ( function() {
     function parseProp(tokens, obj, prop) {
           var result = {};
             if (obj[prop].conditional) {
-              if ( tokens[obj[prop].conditional.value] == obj[prop].conditional.equals) {
+              if (tokens[obj[prop].conditional.value] == obj[prop].conditional.equals) {
                 result[prop] = {};
                 result[prop].value = tokens[obj[prop].value];
                 if (obj[prop].units) {
