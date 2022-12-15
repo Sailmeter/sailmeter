@@ -292,7 +292,7 @@ var currentlon = null;
 var currentspeed = null;
 
 function write_to_file(filename, data) {
-  fs.appendFile(filename, data, function (err) {
+  fs.appendFile(filename, data + '\n', function (err) {
     if (err) return console.log(err);
   });
 };
