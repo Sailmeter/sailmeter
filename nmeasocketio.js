@@ -302,7 +302,7 @@ function writeData(port, sentence) {
     //console.log(port + ": " + new Date().toString() + ": " + sentence);
     var raw = { port: port, timestamp: Date.now(), sentence: sentence };
     // write raw to a file
-    write_to_file('output_data_raw.txt', JSON.stringify(raw));
+    // write_to_file('output_data_raw.txt', JSON.stringify(raw));
     io.emit('raw', JSON.stringify([raw], null, 2));
     var object = nmea.parse(sentence)
     object.forEach(function (obj) {
