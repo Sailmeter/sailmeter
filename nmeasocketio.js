@@ -294,11 +294,19 @@ var currentspeed = null;
 function writeData(port, sentence) {
   try {
     //console.log(port + ": " + new Date().toString() + ": " + sentence);
-    var raw = {port: port, timestamp: Date.now(), sentence: sentence};
+    var raw = { port: port, timestamp: Date.now(), sentence: sentence };
+    // write raw to a file
+    fs.writeFile('output_data_raw.json', JSON.stringify(raw), 'utf8', function (err) {
+      if (err) throw err;
+    })
     io.emit('raw', JSON.stringify([raw], null, 2));
     var object = nmea.parse(sentence)
     object.forEach(function(obj) {
       obj.timestamp = Date.now();
+      // write nmea to a file
+      fs.writeFile('output_data_nmea.json', JSON.stringify(obj), 'utf8', function (err) {
+        if (err) throw err;
+      })
       io.emit('nmea', JSON.stringify([obj], null, 2));
       if (obj.BLA) {
         currentlat = obj.BLA.value;
