@@ -295,26 +295,6 @@ function write_to_file(filename, data) {
   fs.appendFile(filename, data, function (err) {
     if (err) return console.log(err);
   });
-  // //check if file exist
-  // if (!fs.existsSync(filename)) {
-  //   //create new file if not exist
-  //   fs.closeSync(fs.openSync(filename, 'w'));
-  // }
-
-  // // read file
-  // const file = fs.readFileSync(filename)
-
-  // //check if file is empty
-  // if (file.length == 0) {
-  //   //add data to json file
-  //   fs.writeFileSync(filename, JSON.stringify([data]))
-  // } else {
-  //   //append data to jso file
-  //   const json = JSON.parse(file.toString())
-  //   //add json element to json object
-  //   json.push(data);
-  //   fs.writeFileSync(filename, JSON.stringify(data))
-  // }
 };
 
 function writeData(port, sentence) {
