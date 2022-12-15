@@ -292,26 +292,29 @@ var currentlon = null;
 var currentspeed = null;
 
 function write_to_file(filename, data) {
-  //check if file exist
-  if (!fs.existsSync(filename)) {
-    //create new file if not exist
-    fs.closeSync(fs.openSync(filename, 'w'));
-  }
+  fs.appendFile(filename, data, function (err) {
+    if (err) return console.log(err);
+  });
+  // //check if file exist
+  // if (!fs.existsSync(filename)) {
+  //   //create new file if not exist
+  //   fs.closeSync(fs.openSync(filename, 'w'));
+  // }
 
-  // read file
-  const file = fs.readFileSync(filename)
+  // // read file
+  // const file = fs.readFileSync(filename)
 
-  //check if file is empty
-  if (file.length == 0) {
-    //add data to json file
-    fs.writeFileSync(filename, JSON.stringify([data]))
-  } else {
-    //append data to jso file
-    const json = JSON.parse(file.toString())
-    //add json element to json object
-    json.push(data);
-    fs.writeFileSync(filename, JSON.stringify(data))
-  }
+  // //check if file is empty
+  // if (file.length == 0) {
+  //   //add data to json file
+  //   fs.writeFileSync(filename, JSON.stringify([data]))
+  // } else {
+  //   //append data to jso file
+  //   const json = JSON.parse(file.toString())
+  //   //add json element to json object
+  //   json.push(data);
+  //   fs.writeFileSync(filename, JSON.stringify(data))
+  // }
 };
 
 function writeData(port, sentence) {
@@ -319,13 +322,13 @@ function writeData(port, sentence) {
     //console.log(port + ": " + new Date().toString() + ": " + sentence);
     var raw = { port: port, timestamp: Date.now(), sentence: sentence };
     // write raw to a file
-    write_to_file('output_data_raw.json', JSON.stringify(raw));
+    write_to_file('output_data_raw.txt', JSON.stringify(raw));
     io.emit('raw', JSON.stringify([raw], null, 2));
     var object = nmea.parse(sentence)
     object.forEach(function (obj) {
       obj.timestamp = Date.now();
       // write nmea to a file
-      write_to_file('output_data_nmea.json', JSON.stringify(obj));
+      write_to_file('output_data_nmea.txt', JSON.stringify(obj));
       io.emit('nmea', JSON.stringify([obj], null, 2));
       if (obj.BLA) {
         currentlat = obj.BLA.value;
