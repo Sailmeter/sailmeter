@@ -105,15 +105,11 @@
             "value": "7",
             "code": "N"
         },
-        "BHT": {
+        "BCT": {
             "value": "8",
             "code": "T"
         },
-        "BST": {
-            "value": "7",
-            "code": "N"
-        },
-        "BHM": {
+        "BCM": {
             "value": "8",
             "code": "17"
         }
@@ -129,20 +125,7 @@
             "code": "N"
         }
     },
-    "GPVHW": {
-        "BHM": {
-            "value": "3",
-            "code": "0"
-        },
-        "BHT": {
-            "value": "1",
-            "units": "2"
-        },
-        "BST": {
-            "value": "5",
-            "units": "N"
-        }
-    },
+    "GPVHW": { },
     "VWVHW": {
         "BHM": {
             "value": "3",
@@ -160,11 +143,11 @@
     "IIVLW": {},
     "IIVPW": {},
     "GPVTG": {
-        "BHT": {
+        "BCT": {
             "value": "1",
             "units": "2"
         },
-        "BHM": {
+        "BCM": {
             "value": "3",
             "code": "0"
         },
@@ -182,7 +165,7 @@
             "value": "3",
             "code": "0"
         },
-        "SOG": {
+        "BST": {
             "value": "5",
             "units": "6"
         }
