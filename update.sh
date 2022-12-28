@@ -7,7 +7,7 @@ fi
 
 stop nmeasocketio
 
-su ubuntu -c 'git stash && git pull && git stash pop'
+su ubuntu -c 'git reset --hard origin/master && git stash && git pull && git stash pop'
 
 su ubuntu -c 'npm install --production'
 
